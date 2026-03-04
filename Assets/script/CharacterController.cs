@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
@@ -42,6 +42,18 @@ public class RunController : MonoBehaviour
     [Header("Dash Camera Effect")]
     public float dashCameraBackDistance = 1.5f;
     public float cameraMoveSpeed = 5f;
+
+    [Header("Stability")]
+    public StabilitySystem stabilitySystem;
+    public float unstableTurnStrength = 5f;
+
+    [Header("Advanced Stability")]
+    public float turnAcceleration = 10f;   // seberapa cepat banting makin kuat
+    public float maxTurnForce = 15f;       // batas maksimal banting
+    public float turnRecoverySpeed = 8f;   // seberapa cepat pulih kalau kembali ke tengah
+
+    private float currentTurnForce = 0f;
+
 
     private CharacterController controller;
     private PlayerInputActions input;
@@ -215,9 +227,34 @@ public class RunController : MonoBehaviour
             return;
         }
 
+        //kalau speed 0 bakal diem
+        if (currentSpeed <= 0.1f)
+        {
+            stabilitySystem.SnapToCenter();
+            currentTurnForce = 0f;
+            controller.Move(Vector3.zero);
+            return;
+        }
+
+        stabilitySystem.UpdateStability(moveInput.x);
+
+        float direction = stabilitySystem.TurnDirection;
+        float distance = stabilitySystem.DistanceFromCenter;
+
+        if (direction != 0)
+        {
+            currentTurnForce += direction * turnAcceleration * distance * Time.deltaTime;
+        }
+        else
+        {
+            currentTurnForce = Mathf.Lerp(currentTurnForce, 0f, turnRecoverySpeed * Time.deltaTime);
+        }
+
+        currentTurnForce = Mathf.Clamp(currentTurnForce, -maxTurnForce, maxTurnForce);
+
         Vector3 move =
             transform.forward * currentSpeed +
-            transform.right * moveInput.x * sideSpeed;
+            transform.right * currentTurnForce;
 
         Vector3 velocity = move + Vector3.up * yVelocity;
         controller.Move(velocity * Time.deltaTime);
