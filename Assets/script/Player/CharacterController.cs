@@ -54,6 +54,16 @@ public class RunController : MonoBehaviour
 
     private float currentTurnForce = 0f;
 
+    public bool squareLocked = false;
+    private float squareLockTimer = 0f; //tombol kotak
+
+   
+
+    public GameObject boostIndicator;
+
+    private bool boostLocked = false;
+    private float boostLockTimer = 0f;
+
 
     private CharacterController controller;
     private PlayerInputActions input;
@@ -109,6 +119,7 @@ public class RunController : MonoBehaviour
         input.Player.Move.canceled += ctx => moveInput = Vector2.zero;
         input.Player.R1.performed += ctx => StartCombo();
         input.Player.L1.performed += ctx => ExecuteCombo();
+        
     }
 
     void OnDisable()
@@ -143,6 +154,29 @@ public class RunController : MonoBehaviour
         HandleDashCamera();
         CheckOverSpeed();
         UpdateStun();
+
+        if (squareLocked)
+        {
+            squareLockTimer -= Time.deltaTime;
+
+            if (squareLockTimer <= 0)
+            {
+                squareLocked = false;
+            }
+        }
+
+        if (boostLocked)
+        {
+            boostLockTimer -= Time.deltaTime;
+
+            if (boostLockTimer <= 0f)
+            {
+                boostLocked = false;
+
+                if (boostIndicator != null)
+                    boostIndicator.SetActive(true);
+            }
+        }
     }
 
     void StartCombo()
@@ -270,8 +304,10 @@ public class RunController : MonoBehaviour
             Mathf.Lerp(playerCamera.fieldOfView, targetFOV, Time.deltaTime * fovLerpSpeed);
     }
 
-    void StartDash()
+    public void StartDash()
     {
+        if (boostLocked) return;
+
         if (dashCooldownTimer > 0f) return;
 
         isDashing = true;
@@ -340,4 +376,32 @@ public class RunController : MonoBehaviour
         if (stunTimer <= 0f)
             isStunned = false;
     }
+    void PressSquare()
+    {
+        if (squareLocked) return;
+
+        Debug.Log("Square Pressed");
+
+        // isi aksi square di sini (attack / boost / dll)
+    }
+
+    public void LockSquare(float time)
+    {
+        squareLocked = true;
+        squareLockTimer = time;
+    }
+
+    public void AutoPressSquare()
+    {
+        PressSquare();
+    }
+    public void LockBoost(float time)
+    {
+        boostLocked = true;
+        boostLockTimer = time;
+
+        if (boostIndicator != null)
+            boostIndicator.SetActive(false);
+    }
+
 }

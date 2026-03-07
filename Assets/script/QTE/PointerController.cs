@@ -4,28 +4,33 @@ using TMPro;
 
 public class PointerController : MonoBehaviour
 {
+
     public Transform pointA;
     public Transform pointB;
     public RectTransform safeZone;
     public float moveSpeed = 100f;
 
     public TMP_Text arrowText;
-    public TMP_Text timerText;
+    public TMP_Text countdownText;
 
     public GameObject qteCanvas;
+    public GameObject countdownCanvas;
 
-    private RectTransform pointerTransform;
+    public RunController playerController;
+
+    public RectTransform pointerTransform;
     private Vector3 targetPosition;
 
     private PlayerInputActions input;
-
     private Vector2 currentDirection;
+
+    float countdownTimer = 6f;
 
     private int comboCount = 0;
     private int maxCombo = 4;
 
-    private float timer = 6f;
     private bool qteActive = true;
+    private bool qteSuccess = false;
 
     void Awake()
     {
@@ -46,29 +51,20 @@ public class PointerController : MonoBehaviour
 
     void Start()
     {
-        pointerTransform = GetComponent<RectTransform>();
         targetPosition = pointB.position;
+
+        playerController.enabled = false;
 
         GenerateRandomArrow();
     }
 
     void Update()
     {
-        if (!qteActive) return;
+        RunCountdown();
 
-        HandleTimer();
-        MovePointer();
-    }
-
-    void HandleTimer()
-    {
-        timer -= Time.deltaTime;
-
-        timerText.text = " " + Mathf.Ceil(timer).ToString();
-
-        if (timer <= 0)
+        if (qteActive)
         {
-            FailQTE();
+            MovePointer();
         }
     }
 
@@ -133,8 +129,6 @@ public class PointerController : MonoBehaviour
         {
             comboCount++;
 
-            Debug.Log("SUCCESS " + comboCount);
-
             if (comboCount >= maxCombo)
             {
                 FinishQTE();
@@ -152,18 +146,49 @@ public class PointerController : MonoBehaviour
     void FailQTE()
     {
         qteActive = false;
+        qteSuccess = false;
 
-        Debug.Log("QTE FAILED");
+        playerController.LockBoost(6f);
 
         qteCanvas.SetActive(false);
+        countdownCanvas.SetActive(true);
     }
 
     void FinishQTE()
     {
         qteActive = false;
-
-        Debug.Log("QTE COMPLETE!");
+        qteSuccess = true;
 
         qteCanvas.SetActive(false);
+        countdownCanvas.SetActive(true);
+    }
+
+    void RunCountdown()
+    {
+        countdownTimer -= Time.deltaTime;
+
+        countdownText.text = Mathf.Ceil(countdownTimer).ToString();
+
+        if (countdownTimer <= 0)
+        {
+            CountdownFinished();
+        }
+    }
+
+    void CountdownFinished()
+    {
+        countdownCanvas.SetActive(false);
+
+        playerController.enabled = true;
+
+        if (qteSuccess)
+        {
+            playerController.StartDash();
+        }
+
+        qteActive = true;
+        comboCount = 0;
+
+        GenerateRandomArrow();
     }
 }
