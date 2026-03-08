@@ -55,7 +55,7 @@ public class RaceManager : MonoBehaviour
 
     void AssignRanking(int place, string name, string time)
     {
-        string resultLine = $"{name}{time}";
+        string resultLine =$"{name} {time}";
 
         switch (place)
         {
