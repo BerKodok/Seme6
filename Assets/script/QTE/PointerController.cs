@@ -4,7 +4,6 @@ using TMPro;
 
 public class PointerController : MonoBehaviour
 {
-
     public Transform pointA;
     public Transform pointB;
     public RectTransform safeZone;
@@ -24,12 +23,13 @@ public class PointerController : MonoBehaviour
     private PlayerInputActions input;
     private Vector2 currentDirection;
 
-    float countdownTimer = 6f;
+    float countdownTimer = 10f;
 
     private int comboCount = 0;
     private int maxCombo = 4;
 
     private bool qteActive = true;
+    private bool qteFinished = false;
     private bool qteSuccess = false;
 
     void Awake()
@@ -55,6 +55,9 @@ public class PointerController : MonoBehaviour
 
         playerController.enabled = false;
 
+        qteCanvas.SetActive(true);
+        countdownCanvas.SetActive(true);
+
         GenerateRandomArrow();
     }
 
@@ -62,9 +65,48 @@ public class PointerController : MonoBehaviour
     {
         RunCountdown();
 
-        if (qteActive)
+        if (qteActive && countdownTimer > 0f)
         {
             MovePointer();
+        }
+    }
+
+    void RunCountdown()
+    {
+        if (countdownTimer <= 0f) return;
+
+        countdownTimer -= Time.deltaTime;
+
+        int display = Mathf.CeilToInt(countdownTimer);
+        countdownText.text = display.ToString();
+
+        if (countdownTimer <= 0f)
+        {
+            countdownTimer = 0f;
+            CountdownFinished();
+        }
+    }
+
+    void CountdownFinished()
+    {
+        countdownCanvas.SetActive(false);
+
+        // jika QTE tidak pernah diselesaikan
+        if (!qteFinished)
+        {
+            qteSuccess = false;
+            qteCanvas.SetActive(false); // matikan QTE canvas
+        }
+
+        playerController.enabled = true;
+
+        if (qteSuccess)
+        {
+            playerController.canUseBoost = true;
+        }
+        else
+        {
+            playerController.LockBoost(6f);
         }
     }
 
@@ -115,7 +157,7 @@ public class PointerController : MonoBehaviour
 
     void OnDpadPressed(InputAction.CallbackContext ctx)
     {
-        if (!qteActive) return;
+        if (!qteActive || qteFinished) return;
 
         Vector2 inputDir = ctx.ReadValue<Vector2>();
 
@@ -145,50 +187,23 @@ public class PointerController : MonoBehaviour
 
     void FailQTE()
     {
-        qteActive = false;
+        if (qteFinished) return;
+
         qteSuccess = false;
+        qteFinished = true;
+        qteActive = false;
 
-        playerController.LockBoost(6f);
-
-        qteCanvas.SetActive(false);
-        countdownCanvas.SetActive(true);
+        qteCanvas.SetActive(false); // matikan QTE canvas
     }
 
     void FinishQTE()
     {
-        qteActive = false;
+        if (qteFinished) return;
+
         qteSuccess = true;
+        qteFinished = true;
+        qteActive = false;
 
-        qteCanvas.SetActive(false);
-        countdownCanvas.SetActive(true);
-    }
-
-    void RunCountdown()
-    {
-        countdownTimer -= Time.deltaTime;
-
-        countdownText.text = Mathf.Ceil(countdownTimer).ToString();
-
-        if (countdownTimer <= 0)
-        {
-            CountdownFinished();
-        }
-    }
-
-    void CountdownFinished()
-    {
-        countdownCanvas.SetActive(false);
-
-        playerController.enabled = true;
-
-        if (qteSuccess)
-        {
-            playerController.StartDash();
-        }
-
-        qteActive = true;
-        comboCount = 0;
-
-        GenerateRandomArrow();
+        qteCanvas.SetActive(false); // matikan QTE canvas
     }
 }

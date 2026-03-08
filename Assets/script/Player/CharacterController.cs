@@ -57,13 +57,18 @@ public class RunController : MonoBehaviour
     public bool squareLocked = false;
     private float squareLockTimer = 0f; //tombol kotak
 
-   
+
+    public bool boostReady = true;
+    private float boostCooldownTimer = 0f;
+
 
     public GameObject boostIndicator;
 
     private bool boostLocked = false;
     private float boostLockTimer = 0f;
 
+    // ADDED
+    public bool canUseBoost = false;
 
     private CharacterController controller;
     private PlayerInputActions input;
@@ -91,6 +96,8 @@ public class RunController : MonoBehaviour
     private float normalMaxSpeed;
     private float dashMaxSpeed;
 
+    private bool boostOnCooldown = false;
+
     private Vector3 originalCamLocalPos;
 
     private float normalSpeedometerMax = 100f;
@@ -114,12 +121,33 @@ public class RunController : MonoBehaviour
     {
         input.Enable();
 
-        input.Player.Dash.performed += ctx => StartDash();
+        input.Player.Dash.performed += OnDashPressed;
+
         input.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
         input.Player.Move.canceled += ctx => moveInput = Vector2.zero;
+
         input.Player.R1.performed += ctx => StartCombo();
         input.Player.L1.performed += ctx => ExecuteCombo();
-        
+    }
+    void OnDashPressed(InputAction.CallbackContext ctx)
+    {
+        // jika boost sedang dikunci karena QTE gagal
+        if (boostLocked)
+        {
+            Debug.Log("Boost masih cooldown dari QTE!");
+            return;
+        }
+
+        // cooldown dash normal
+        if (!boostReady || !canUseBoost) return;
+
+        boostReady = false;
+        boostCooldownTimer = dashCooldown;
+
+        StartDash();
+
+        if (boostIndicator != null)
+            boostIndicator.SetActive(false);
     }
 
     void OnDisable()
@@ -139,6 +167,9 @@ public class RunController : MonoBehaviour
 
         if (playerCamera != null)
             originalCamLocalPos = playerCamera.transform.localPosition;
+
+        if (boostIndicator != null)
+            boostIndicator.SetActive(true);
     }
 
     void Update()
@@ -169,11 +200,30 @@ public class RunController : MonoBehaviour
         {
             boostLockTimer -= Time.deltaTime;
 
+            int display = Mathf.CeilToInt(boostLockTimer);
+            Debug.Log("Boost timer: " + display);
+
             if (boostLockTimer <= 0f)
             {
                 boostLocked = false;
+                canUseBoost = true;
+
+                Debug.Log("BOOST READY");
 
                 if (boostIndicator != null)
+                    boostIndicator.SetActive(true);
+            }
+        }
+        if (!boostReady)
+{
+            boostCooldownTimer -= Time.deltaTime;
+
+            if (boostCooldownTimer <= 0f)
+            {
+                boostReady = true;
+
+                // hanya hidupkan indikator jika tidak sedang QTE cooldown
+                if (!boostLocked && boostIndicator != null)
                     boostIndicator.SetActive(true);
             }
         }
@@ -400,8 +450,10 @@ public class RunController : MonoBehaviour
         boostLocked = true;
         boostLockTimer = time;
 
+        boostReady = false;
+        canUseBoost = false;
+
         if (boostIndicator != null)
             boostIndicator.SetActive(false);
     }
-
 }
