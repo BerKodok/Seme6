@@ -456,4 +456,10 @@ public class RunController : MonoBehaviour
         if (boostIndicator != null)
             boostIndicator.SetActive(false);
     }
+
+    public void AddStamina(float amount)
+    {
+        currentStamina += amount;
+        currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
+    }
 }
