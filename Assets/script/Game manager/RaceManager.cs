@@ -55,24 +55,24 @@ public class RaceManager : MonoBehaviour
 
     void AssignRanking(int place, string name, string time)
     {
-        string resultLine = $"{name}   {time}";
+        string resultLine = $"{name}{time}";
 
         switch (place)
         {
             case 1:
-                firstPlaceText.text = "🥇 " + resultLine;
+                firstPlaceText.text = resultLine;
                 break;
 
             case 2:
-                secondPlaceText.text = "🥈 " + resultLine;
+                secondPlaceText.text =  resultLine;
                 break;
 
             case 3:
-                thirdPlaceText.text = "🥉 " + resultLine;
+                thirdPlaceText.text = resultLine;
                 break;
 
             case 4:
-                fourthPlaceText.text = "🏅 " + resultLine;
+                fourthPlaceText.text = resultLine;
                 break;
         }
     }
