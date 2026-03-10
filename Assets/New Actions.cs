@@ -127,6 +127,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Dpad"",
+                    ""type"": ""Value"",
+                    ""id"": ""02a69365-2dd8-40a6-8635-68522f7e41c5"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -173,6 +182,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Dash"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eb708864-fed5-4f5d-836e-93936015708d"",
+                    ""path"": ""<Gamepad>/dpad"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Dpad"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -185,6 +205,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_R1 = m_Player.FindAction("R1", throwIfNotFound: true);
         m_Player_L1 = m_Player.FindAction("L1", throwIfNotFound: true);
         m_Player_Dash = m_Player.FindAction("Dash", throwIfNotFound: true);
+        m_Player_Dpad = m_Player.FindAction("Dpad", throwIfNotFound: true);
     }
 
     ~@PlayerInputActions()
@@ -269,6 +290,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_R1;
     private readonly InputAction m_Player_L1;
     private readonly InputAction m_Player_Dash;
+    private readonly InputAction m_Player_Dpad;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -296,6 +318,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Dash".
         /// </summary>
         public InputAction @Dash => m_Wrapper.m_Player_Dash;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/Dpad".
+        /// </summary>
+        public InputAction @Dpad => m_Wrapper.m_Player_Dpad;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -334,6 +360,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Dash.started += instance.OnDash;
             @Dash.performed += instance.OnDash;
             @Dash.canceled += instance.OnDash;
+            @Dpad.started += instance.OnDpad;
+            @Dpad.performed += instance.OnDpad;
+            @Dpad.canceled += instance.OnDpad;
         }
 
         /// <summary>
@@ -357,6 +386,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Dash.started -= instance.OnDash;
             @Dash.performed -= instance.OnDash;
             @Dash.canceled -= instance.OnDash;
+            @Dpad.started -= instance.OnDpad;
+            @Dpad.performed -= instance.OnDpad;
+            @Dpad.canceled -= instance.OnDpad;
         }
 
         /// <summary>
@@ -425,5 +457,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnDash(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Dpad" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDpad(InputAction.CallbackContext context);
     }
 }
