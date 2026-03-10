@@ -6,13 +6,13 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
-    path: Assets/Scenes/_Main Menu.unity
+    path: Assets/_Luthvy/Scenes/_Main Menu.unity
     guid: fca4d5ea7f225be40ab3b8907e043088
   - enabled: 0
-    path: Assets/Scenes/_Lobby Menu.unity
+    path: Assets/_Luthvy/Scenes/_Lobby Menu.unity
     guid: 53869e3aff35b1540bf470779c9e3d8a
   - enabled: 1
-    path: Assets/Scenes/_SceneM.unity
+    path: Assets/_Luthvy/Scenes/_SceneM.unity
     guid: deb47dba160a7014781a0ee6f45d75c7
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
