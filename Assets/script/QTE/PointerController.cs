@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+﻿using UnityEngine; 
 using UnityEngine.InputSystem;
 using TMPro;
 
@@ -31,6 +31,9 @@ public class PointerController : MonoBehaviour
     private bool qteActive = true;
     private bool qteFinished = false;
     private bool qteSuccess = false;
+    bool countdownActive = true;
+
+
 
     void Awake()
     {
@@ -53,7 +56,10 @@ public class PointerController : MonoBehaviour
     {
         targetPosition = pointB.position;
 
-        playerController.enabled = false;
+        playerController.enabled = false; // matikan movement
+
+        if (playerController.PlayerAnimator != null)
+            playerController.PlayerAnimator.speed = 0f; // freeze animasi
 
         qteCanvas.SetActive(true);
         countdownCanvas.SetActive(true);
@@ -91,14 +97,16 @@ public class PointerController : MonoBehaviour
     {
         countdownCanvas.SetActive(false);
 
-        // jika QTE tidak pernah diselesaikan
         if (!qteFinished)
         {
             qteSuccess = false;
-            qteCanvas.SetActive(false); // matikan QTE canvas
+            qteCanvas.SetActive(false);
         }
 
-        playerController.enabled = true;
+        if (playerController.PlayerAnimator != null)
+            playerController.PlayerAnimator.speed = 1f; // animasi jalan lagi
+
+        playerController.enabled = true; // player aktif lagi
 
         if (qteSuccess)
         {

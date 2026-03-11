@@ -40,7 +40,7 @@ public class RunController : MonoBehaviour
 
 
     [Header("Animator")]
-    public Animator animator;
+    public Animator PlayerAnimator;
 
     [Header("Dash Camera Effect")]
     public float dashCameraBackDistance = 1.5f;
@@ -417,8 +417,8 @@ public class RunController : MonoBehaviour
         currentStacks = 0;
         currentSpeed = 0;
 
-        if (animator != null)
-            animator.SetTrigger("Stun");
+        if (PlayerAnimator != null)
+            PlayerAnimator.SetTrigger("Stun");
     }
 
     void UpdateStun()
@@ -469,21 +469,19 @@ public class RunController : MonoBehaviour
 
     void UpdateWalkAnimation()
     {
-        if (animator == null) return;
+        if (PlayerAnimator == null) return;
 
-        if (currentSpeed <= 0.1f)
+        // jika player tidak bergerak
+        if (currentSpeed <= 0.05f)
         {
-            animator.speed = 0f;
-            return;
-        }
-
-        if (isDashing)
-        {
-            animator.speed = 1.7f;
+            PlayerAnimator.speed = 0f;
         }
         else
         {
-            animator.speed = 1f;
+            if (isDashing)
+                PlayerAnimator.speed = 1.7f;
+            else
+                PlayerAnimator.speed = 1f;
         }
     }
 }
