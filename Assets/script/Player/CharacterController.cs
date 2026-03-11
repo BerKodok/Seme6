@@ -37,6 +37,9 @@ public class RunController : MonoBehaviour
 
     [Header("OverSpeed Stun")]
     public float stunDuration = 2f;
+
+
+    [Header("Animator")]
     public Animator animator;
 
     [Header("Dash Camera Effect")]
@@ -185,6 +188,7 @@ public class RunController : MonoBehaviour
         HandleDashCamera();
         CheckOverSpeed();
         UpdateStun();
+        UpdateWalkAnimation();
 
         if (squareLocked)
         {
@@ -461,5 +465,25 @@ public class RunController : MonoBehaviour
     {
         currentStamina += amount;
         currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
+    }
+
+    void UpdateWalkAnimation()
+    {
+        if (animator == null) return;
+
+        if (currentSpeed <= 0.1f)
+        {
+            animator.speed = 0f;
+            return;
+        }
+
+        if (isDashing)
+        {
+            animator.speed = 1.7f;
+        }
+        else
+        {
+            animator.speed = 1f;
+        }
     }
 }
