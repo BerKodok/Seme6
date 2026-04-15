@@ -64,6 +64,7 @@ public class RunController : MonoBehaviour
     public bool boostReady = true;
     private float boostCooldownTimer = 0f;
 
+    private WallBounce wallBounce;
 
     public GameObject boostIndicator;
 
@@ -118,6 +119,7 @@ public class RunController : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         input = new PlayerInputActions();
+        wallBounce = GetComponent<WallBounce>();
     }
 
     void OnEnable()
@@ -343,6 +345,11 @@ public class RunController : MonoBehaviour
         Vector3 move =
             transform.forward * currentSpeed +
             transform.right * currentTurnForce;
+
+        if (wallBounce != null)
+        {
+            wallBounce.SetMoveDirection(move.normalized);
+        }
 
         Vector3 velocity = move + Vector3.up * yVelocity;
         controller.Move(velocity * Time.deltaTime);

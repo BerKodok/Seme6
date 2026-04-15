@@ -9,7 +9,7 @@ public class SoundManager : MonoBehaviour
     public static SoundManager Instance;
 
     public Sound[] musicSound, sfxPlayer;
-    public AudioSource MainMenu, sfxPlayerr, CharacterSelection, Gameplay, Skill, Boost;
+    public AudioSource MainBGMSource, sfxPlayerr;
 
     private void Awake()
     {
@@ -34,9 +34,9 @@ public class SoundManager : MonoBehaviour
         }
         else
         {
-            MainMenu.clip = s.clip;
+            MainBGMSource.clip = s.clip;
             SetMusicVolume(name, s.volume);
-            MainMenu.Play();
+            MainBGMSource.Play();
         }
     }
 
@@ -47,9 +47,9 @@ public class SoundManager : MonoBehaviour
         if (s != null)
         {
             s.volume = Mathf.Clamp(volume, 0f, 1f);
-            if (MainMenu.clip == s.clip)
+            if (MainBGMSource.clip == s.clip)
             {
-                MainMenu.volume = s.volume;
+                MainBGMSource.volume = s.volume;
             }
         }
     }
