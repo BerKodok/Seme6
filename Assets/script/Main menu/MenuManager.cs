@@ -7,6 +7,8 @@ public class MenuManager : MonoBehaviour
 {
     public CinemachineCamera MenuCam;
     public CinemachineCamera CharacterSelectCam;
+    public GameObject MenuPanel;
+    public GameObject OptionPanel;
 
     // ?? BGM
     public AudioSource bgmSource;
@@ -63,6 +65,8 @@ public class MenuManager : MonoBehaviour
         PlayClick();
 
         CameraManager.SwitchCamera(MenuCam);
+        MenuPanel.SetActive(true);
+        OptionPanel.SetActive(false);
         SwitchMusic(mainMenuBGM);
     }
 
@@ -70,14 +74,23 @@ public class MenuManager : MonoBehaviour
     {
         PlayClick();
 
-        CameraManager.SwitchCamera(CharacterSelectCam);
-        SwitchMusic(characterBGM);
+        OptionPanel.SetActive(true);
+        MenuPanel.SetActive(false);
     }
 
     public void PlayGame()
     {
         PlayClick();
-        SceneManager.LoadScene("InGame");
+        CameraManager.SwitchCamera(CharacterSelectCam);
+        SwitchMusic(characterBGM);
+    }
+
+    public void BackMenu()
+    {
+        PlayClick();
+        CameraManager.SwitchCamera(MenuCam);
+        MenuPanel.SetActive(true);
+        OptionPanel.SetActive(false);
     }
 
     public void QuitGame()

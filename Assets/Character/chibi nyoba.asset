@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: chibi nyoba
   m_EditorClassIdentifier: Assembly-CSharp::Character
   characterName: Chibi
-  characterTexture: {fileID: 2800000, guid: 714a7e1cf731dbe48875c6c0979c1d70, type: 3}
+  characterSprite: {fileID: 21300000, guid: 714a7e1cf731dbe48875c6c0979c1d70, type: 3}

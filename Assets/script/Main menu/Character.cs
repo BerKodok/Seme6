@@ -5,5 +5,5 @@ using UnityEngine;
 public class Character : ScriptableObject
 {
    public string characterName;
-   public Texture characterTexture;
+   public Sprite characterSprite;
 }

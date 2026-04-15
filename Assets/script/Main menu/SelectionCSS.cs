@@ -7,7 +7,7 @@ using TMPro;
 public class SelectionCSS : MonoBehaviour
 {
     public List<Character> characters = new List<Character>();
-    public GameObject charChellPrefab;
+    public GameObject charCellPrefab;
 
     void Start()
     {
@@ -19,14 +19,14 @@ public class SelectionCSS : MonoBehaviour
     
     void SpawnCharacterCell(Character character)
     {
-        GameObject charCell = Instantiate(charChellPrefab, transform);
+        GameObject charCell = Instantiate(charCellPrefab, transform);
         
         charCell.name = character.characterName;
 
-        RawImage artwork = charCell.transform.Find("artwork").GetComponent<RawImage>();
+        Image artwork = charCell.transform.Find("artwork").GetComponent<Image>();
         TextMeshProUGUI name = charCell.transform.Find("nameRect").GetComponentInChildren<TextMeshProUGUI>();
 
-        artwork.texture = character.characterTexture;
+        artwork.sprite = character.characterSprite;
         name.text = character.characterName;
 
     }
