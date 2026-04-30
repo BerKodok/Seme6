@@ -4830,6 +4830,7 @@ MonoBehaviour:
   boostIndicator: {fileID: 4462161769933555395}
   canUseBoost: 0
   comboWindow: 0.5
+  pointerController: {fileID: 9022880013819333486}
 --- !u!114 &2336770609067083205
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4887,7 +4888,7 @@ MonoBehaviour:
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: 0746fb09-e01e-48cc-8ac3-7a3de290fdee
+  m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 747401694988592544}
 --- !u!114 &2638579300116440672

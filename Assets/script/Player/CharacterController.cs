@@ -187,7 +187,7 @@ public class RunController : MonoBehaviour
             boostIndicator.SetActive(true);
         if (pointerController != null)
         {
-            pointerController.Init(playerInput); // 🔥 INI WAJIB
+            pointerController.Init(playerInput);
         }
 
     }

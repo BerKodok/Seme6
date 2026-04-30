@@ -65,11 +65,10 @@ public class PointerController : MonoBehaviour
 
     void Update()
     {
-        if (!qteActive) return;
-
         RunCountdown();
 
-        if (countdownTimer > 0f)
+        
+        if (qteActive && countdownTimer > 0f)
             MovePointer();
     }
 
@@ -117,9 +116,9 @@ public class PointerController : MonoBehaviour
                 playerController.LockBoost(6f);
         }
 
-        CleanupInput();
+        if (!qteActive || qteFinished) return;
     }
-
+    
     void MovePointer()
     {
         pointerTransform.anchoredPosition = Vector2.MoveTowards(
@@ -252,8 +251,9 @@ public class PointerController : MonoBehaviour
             return;
         }
 
+        dpadAction.Enable(); // 🔥 WAJIB
         dpadAction.performed += OnDpadPressed;
 
-        Debug.Log("QTE Input READY untuk player: " + playerInput.playerIndex);
+        Debug.Log("Dpad siap untuk player: " + playerInput.playerIndex);
     }
 }
