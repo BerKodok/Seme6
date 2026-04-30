@@ -1,11 +1,11 @@
-﻿using UnityEngine; 
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 
 public class PointerController : MonoBehaviour
 {
-    public Transform pointA;
-    public Transform pointB;
+    public RectTransform pointA;
+    public RectTransform pointB;
     public RectTransform safeZone;
     public float moveSpeed = 100f;
 
@@ -18,9 +18,11 @@ public class PointerController : MonoBehaviour
     public RunController playerController;
 
     public RectTransform pointerTransform;
-    private Vector3 targetPosition;
 
-    private PlayerInputActions input;
+    private Vector2 targetPosition;
+
+    private PlayerInput playerInput;
+    private InputAction dpadAction;
     private Vector2 currentDirection;
 
     float countdownTimer = 10f;
@@ -28,53 +30,47 @@ public class PointerController : MonoBehaviour
     private int comboCount = 0;
     private int maxCombo = 4;
 
-    private bool qteActive = true;
+    private bool qteActive = false;
     private bool qteFinished = false;
     private bool qteSuccess = false;
-    bool countdownActive = true;
-
-
-
-    void Awake()
-    {
-        input = new PlayerInputActions();
-    }
-
-    void OnEnable()
-    {
-        input.Enable();
-        input.Player.Dpad.performed += OnDpadPressed;
-    }
-
-    void OnDisable()
-    {
-        input.Player.Dpad.performed -= OnDpadPressed;
-        input.Disable();
-    }
 
     void Start()
     {
-        targetPosition = pointB.position;
+        Debug.Log("PlayerInput: " + playerInput);
 
-        playerController.enabled = false; // matikan movement
+        if (pointA == null || pointB == null || pointerTransform == null)
+        {
+            Debug.LogError("PointerController belum lengkap!");
+            enabled = false;
+            return;
+        }
 
-        if (playerController.PlayerAnimator != null)
-            playerController.PlayerAnimator.speed = 0f; // freeze animasi
+        targetPosition = pointB.anchoredPosition;
 
-        qteCanvas.SetActive(true);
-        countdownCanvas.SetActive(true);
+        if (playerController != null)
+        {
+            playerController.enabled = false;
+
+            if (playerController.PlayerAnimator != null)
+                playerController.PlayerAnimator.speed = 0f;
+        }
+
+        if (qteCanvas != null) qteCanvas.SetActive(true);
+        if (countdownCanvas != null) countdownCanvas.SetActive(true);
+
+        qteActive = true;
 
         GenerateRandomArrow();
     }
 
     void Update()
     {
+        if (!qteActive) return;
+
         RunCountdown();
 
-        if (qteActive && countdownTimer > 0f)
-        {
+        if (countdownTimer > 0f)
             MovePointer();
-        }
     }
 
     void RunCountdown()
@@ -84,7 +80,9 @@ public class PointerController : MonoBehaviour
         countdownTimer -= Time.deltaTime;
 
         int display = Mathf.CeilToInt(countdownTimer);
-        countdownText.text = display.ToString();
+
+        if (countdownText != null)
+            countdownText.text = display.ToString();
 
         if (countdownTimer <= 0f)
         {
@@ -95,44 +93,47 @@ public class PointerController : MonoBehaviour
 
     void CountdownFinished()
     {
-        countdownCanvas.SetActive(false);
+        if (countdownCanvas != null)
+            countdownCanvas.SetActive(false);
 
         if (!qteFinished)
         {
             qteSuccess = false;
-            qteCanvas.SetActive(false);
+
+            if (qteCanvas != null)
+                qteCanvas.SetActive(false);
         }
 
-        if (playerController.PlayerAnimator != null)
-            playerController.PlayerAnimator.speed = 1f; // animasi jalan lagi
-
-        playerController.enabled = true; // player aktif lagi
-
-        if (qteSuccess)
+        if (playerController != null)
         {
-            playerController.canUseBoost = true;
+            if (playerController.PlayerAnimator != null)
+                playerController.PlayerAnimator.speed = 1f;
+
+            playerController.enabled = true;
+
+            if (qteSuccess)
+                playerController.canUseBoost = true;
+            else
+                playerController.LockBoost(6f);
         }
-        else
-        {
-            playerController.LockBoost(6f);
-        }
+
+        CleanupInput();
     }
 
     void MovePointer()
     {
-        pointerTransform.position = Vector3.MoveTowards(
-            pointerTransform.position,
+        pointerTransform.anchoredPosition = Vector2.MoveTowards(
+            pointerTransform.anchoredPosition,
             targetPosition,
             moveSpeed * Time.deltaTime);
 
-        if (Vector3.Distance(pointerTransform.position, pointA.position) < 0.1f)
-        {
-            targetPosition = pointB.position;
-        }
-        else if (Vector3.Distance(pointerTransform.position, pointB.position) < 0.1f)
-        {
-            targetPosition = pointA.position;
-        }
+        float distA = Vector2.Distance(pointerTransform.anchoredPosition, pointA.anchoredPosition);
+        float distB = Vector2.Distance(pointerTransform.anchoredPosition, pointB.anchoredPosition);
+
+        if (distA < 5f)
+            targetPosition = pointB.anchoredPosition;
+        else if (distB < 5f)
+            targetPosition = pointA.anchoredPosition;
     }
 
     void GenerateRandomArrow()
@@ -143,22 +144,22 @@ public class PointerController : MonoBehaviour
         {
             case 0:
                 currentDirection = Vector2.up;
-                arrowText.text = "↑";
+                if (arrowText != null) arrowText.text = "↑";
                 break;
 
             case 1:
                 currentDirection = Vector2.down;
-                arrowText.text = "↓";
+                if (arrowText != null) arrowText.text = "↓";
                 break;
 
             case 2:
                 currentDirection = Vector2.left;
-                arrowText.text = "←";
+                if (arrowText != null) arrowText.text = "←";
                 break;
 
             case 3:
                 currentDirection = Vector2.right;
-                arrowText.text = "→";
+                if (arrowText != null) arrowText.text = "→";
                 break;
         }
     }
@@ -167,15 +168,19 @@ public class PointerController : MonoBehaviour
     {
         if (!qteActive || qteFinished) return;
 
-        Vector2 inputDir = ctx.ReadValue<Vector2>();
+        Vector2 inputDir = ctx.ReadValue<Vector2>().normalized;
 
-        if (inputDir != currentDirection)
+        
+        if (Vector2.Dot(inputDir, currentDirection) < 0.9f)
         {
             FailQTE();
             return;
         }
 
-        if (RectTransformUtility.RectangleContainsScreenPoint(safeZone, pointerTransform.position, null))
+        if (RectTransformUtility.RectangleContainsScreenPoint(
+            safeZone,
+            pointerTransform.position,
+            null))
         {
             comboCount++;
 
@@ -191,6 +196,7 @@ public class PointerController : MonoBehaviour
         {
             FailQTE();
         }
+        Debug.Log("INPUT MASUK: " + ctx.ReadValue<Vector2>());
     }
 
     void FailQTE()
@@ -201,7 +207,10 @@ public class PointerController : MonoBehaviour
         qteFinished = true;
         qteActive = false;
 
-        qteCanvas.SetActive(false); // matikan QTE canvas
+        if (qteCanvas != null)
+            qteCanvas.SetActive(false);
+
+        CleanupInput();
     }
 
     void FinishQTE()
@@ -212,6 +221,39 @@ public class PointerController : MonoBehaviour
         qteFinished = true;
         qteActive = false;
 
-        qteCanvas.SetActive(false); // matikan QTE canvas
+        if (qteCanvas != null)
+            qteCanvas.SetActive(false);
+
+        CleanupInput();
+    }
+
+    void CleanupInput()
+    {
+        if (dpadAction != null)
+            dpadAction.performed -= OnDpadPressed;
+    }
+
+
+    public void Init(PlayerInput inputFromPlayer)
+    {
+        playerInput = inputFromPlayer;
+
+        if (playerInput == null)
+        {
+            Debug.LogError("PlayerInput NULL!");
+            return;
+        }
+
+        dpadAction = playerInput.actions["Dpad"];
+
+        if (dpadAction == null)
+        {
+            Debug.LogError("Action Dpad tidak ditemukan!");
+            return;
+        }
+
+        dpadAction.performed += OnDpadPressed;
+
+        Debug.Log("QTE Input READY untuk player: " + playerInput.playerIndex);
     }
 }

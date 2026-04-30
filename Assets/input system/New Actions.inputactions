@@ -59,7 +59,7 @@
                     "path": "<Gamepad>/leftStick",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";GamePad",
                     "action": "Move",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -70,7 +70,7 @@
                     "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";GamePad",
                     "action": "R1",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -81,7 +81,7 @@
                     "path": "<Gamepad>/leftShoulder",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";GamePad",
                     "action": "L1",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -92,7 +92,7 @@
                     "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";GamePad",
                     "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -103,7 +103,7 @@
                     "path": "<Gamepad>/dpad",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
+                    "groups": ";GamePad",
                     "action": "Dpad",
                     "isComposite": false,
                     "isPartOfComposite": false
