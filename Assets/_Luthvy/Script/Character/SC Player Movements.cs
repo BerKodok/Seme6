@@ -40,7 +40,7 @@ public class SCPlayerMovements : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         inputAsset = this.GetComponent<PlayerInput>().actions;
-        player = inputAsset.FindActionMap("ThePlayer");
+        player = inputAsset.FindActionMap("LHS_Player");
         //camTransform, playerCam = GetComponentInChildren<cin>
 
         //playerInputActions = new PlayerInputActions();
