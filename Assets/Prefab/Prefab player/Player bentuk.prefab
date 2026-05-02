@@ -3802,7 +3802,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 119, y: 7}
+  m_AnchoredPosition: {x: 118.99997, y: 7}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8835105181891315988
@@ -4671,6 +4671,7 @@ GameObject:
   - component: {fileID: 4969009910659521975}
   - component: {fileID: 2152977374022708631}
   - component: {fileID: 2638579300116440672}
+  - component: {fileID: 2777587736879029335}
   m_Layer: 0
   m_Name: Player bentuk
   m_TagString: Player
@@ -4821,10 +4822,10 @@ MonoBehaviour:
   dashCameraBackDistance: 1.5
   cameraMoveSpeed: 5
   stabilitySystem: {fileID: 2336770609067083205}
-  unstableTurnStrength: 5
-  turnAcceleration: 10
-  maxTurnForce: 15
-  turnRecoverySpeed: 5
+  unstableTurnStrength: 4
+  turnAcceleration: 8
+  maxTurnForce: 10
+  turnRecoverySpeed: 4
   squareLocked: 0
   boostReady: 0
   boostIndicator: {fileID: 4462161769933555395}
@@ -4904,6 +4905,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   playerCamera: {fileID: 747401694988592544}
+--- !u!114 &2777587736879029335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5325538859241904366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da64781d2440316439949f9dd26ec56f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerReadyInput
 --- !u!1 &5343150286844872740
 GameObject:
   m_ObjectHideFlags: 0
