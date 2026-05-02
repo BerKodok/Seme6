@@ -25,7 +25,7 @@ MonoBehaviour:
     fontStyle: 1
   - keyChar: '#'
     textColor: {r: 1, g: 1, b: 1, a: 1}
-    backgroundColor: {r: 0, g: 0.18034583, b: 0.7735849, a: 1}
+    backgroundColor: {r: 0.3254717, g: 0.48297584, b: 1, a: 1}
     textAlignment: 3
     fontStyle: 1
   - keyChar: '@'

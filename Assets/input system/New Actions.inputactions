@@ -111,7 +111,7 @@
             ]
         },
         {
-            "name": "TheCam",
+            "name": "LHS_Cam",
             "id": "bafd23c8-d5b5-4704-b69e-4e6b63ff2a13",
             "actions": [
                 {
@@ -170,7 +170,7 @@
             ]
         },
         {
-            "name": "ThePlayer",
+            "name": "LHS_Player",
             "id": "c0b2a898-e8d2-4815-81ff-487205e24607",
             "actions": [
                 {
@@ -340,6 +340,140 @@
                     "processors": "",
                     "groups": "",
                     "action": "Join",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "LHS_UI",
+            "id": "38a783fa-6f74-4c4d-8040-b8280d9ac9ff",
+            "actions": [
+                {
+                    "name": "CS_Navigate",
+                    "type": "Value",
+                    "id": "3867c8ca-66c1-4590-a34e-8e0383d2724a",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "CS_Submit",
+                    "type": "Button",
+                    "id": "e6006a6a-a6a1-49b1-9ee2-6f44b0b5b11f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "CS_Join",
+                    "type": "Button",
+                    "id": "102defe0-a959-452c-8db5-f08b3687e4f5",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "abffb81b-8ff2-4bae-be49-f5e720cbbef1",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CS_Submit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9b2238ce-49e1-4d19-a26a-abbae898f1e1",
+                    "path": "<Gamepad>/start",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CS_Submit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "2D Vector",
+                    "id": "0b46d481-1be1-473a-af36-03483ceb34fd",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CS_Navigate",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "left",
+                    "id": "784b1762-9584-4ea2-8c4d-be5a03fda6f5",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CS_Navigate",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "e919413b-7608-4766-9933-9f4a1ea9c009",
+                    "path": "<Gamepad>/dpad/left",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CS_Navigate",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "61a7f0f0-fdcf-427d-b530-7d718e469ab9",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CS_Navigate",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "6786424d-a3bd-4335-b3a0-a2f71112e170",
+                    "path": "<Gamepad>/dpad/right",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CS_Navigate",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "086c30d6-34e0-42a4-9610-e9424de64250",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CS_Join",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9569b2e8-33c1-4a12-8516-30e0bd6e2062",
+                    "path": "<Keyboard>/enter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CS_Join",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

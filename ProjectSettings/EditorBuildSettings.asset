@@ -8,6 +8,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/_Luthvy/Scene/SceneLegacy.unity
+    guid: 3a883100bc72df64da7b347f0b4ed561
+  - enabled: 1
+    path: Assets/_Luthvy/Scene/SceneLobby.unity
+    guid: 57003890a7ffb974e83ea29776e9a49d
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 08f52071fbd19e9478394239b8e0585a, type: 3}
   m_UseUCBPForAssetBundles: 0
