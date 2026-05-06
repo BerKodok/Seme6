@@ -224,8 +224,8 @@ Transform:
   m_GameObject: {fileID: 66488257}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 47.5, y: 0, z: 0.71200013}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 40.91, y: 0, z: 0.71200013}
+  m_LocalScale: {x: 1, y: 1, z: 3000}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 335241199}
@@ -926,7 +926,7 @@ MonoBehaviour:
         m_Flags: 0
       m_Flags: 0
     m_Reference: {fileID: 0}
-  m_PlayerPrefab: {fileID: 6058866343702847747, guid: 9566c0f4b69c290469ef7857161b48ea, type: 3}
+  m_PlayerPrefab: {fileID: 5325538859241904366, guid: 3def807edef1fa44b9bda2ec2933bcb7, type: 3}
   m_SplitScreen: 1
   m_MaintainAspectRatioInSplitScreen: 0
   m_FixedNumberOfSplitScreens: -1
@@ -945,7 +945,7 @@ Transform:
   m_GameObject: {fileID: 587812081}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 27.40465, y: -2.722293, z: 16.006737}
+  m_LocalPosition: {x: 0, y: 3.11, z: 16.006737}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1307,8 +1307,8 @@ Transform:
   m_GameObject: {fileID: 736761383}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -13.300001, y: 0, z: 2.8839998}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 11, y: 0, z: 2.8839998}
+  m_LocalScale: {x: 1, y: 1, z: 3000}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 335241199}

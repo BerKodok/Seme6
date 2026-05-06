@@ -41,6 +41,7 @@ public class RunController : MonoBehaviour
 
     [Header("Animator")]
     public Animator PlayerAnimator;
+    public Animator SecondaryAnimator; 
 
     [Header("Dash Camera Effect")]
     public float dashCameraBackDistance = 1.5f;
@@ -55,6 +56,14 @@ public class RunController : MonoBehaviour
     public float maxTurnForce = 15f;       // batas maksimal banting
     public float turnRecoverySpeed = 8f;   // seberapa cepat pulih kalau kembali ke tengah
 
+    [Header("QTE Trigger")]
+    public float qteDelay = 5f;
+    public StaminaQTETrigger staminaQTE; // drag object QTE di sini
+
+    private float qteTimer;
+    private bool qteTriggered = false;
+
+
     private float currentTurnForce = 0f;
 
     public bool squareLocked = false;
@@ -64,6 +73,7 @@ public class RunController : MonoBehaviour
     public bool boostReady = true;
     private float boostCooldownTimer = 0f;
 
+    private WallBounce wallBounce;
 
     public GameObject boostIndicator;
 
@@ -74,7 +84,11 @@ public class RunController : MonoBehaviour
     public bool canUseBoost = false;
 
     private CharacterController controller;
-    private PlayerInputActions input;
+    private PlayerInput playerInput;
+    private InputAction moveAction;
+    private InputAction dashAction;
+    private InputAction r1Action;
+    private InputAction l1Action;
 
     private Vector2 moveInput;
     private float currentSpeed;
@@ -114,23 +128,30 @@ public class RunController : MonoBehaviour
     public float DashCooldownTimer => dashCooldownTimer;
     public float CurrentSpeedometerMax => currentSpeedometerMax;
 
+    public PointerController pointerController;
+
     void Awake()
     {
         controller = GetComponent<CharacterController>();
-        input = new PlayerInputActions();
+        playerInput = GetComponent<PlayerInput>();
+
+        moveAction = playerInput.actions["Move"];
+        dashAction = playerInput.actions["Dash"];
+        r1Action = playerInput.actions["R1"];
+        l1Action = playerInput.actions["L1"];
+
+        wallBounce = GetComponent<WallBounce>();
     }
 
     void OnEnable()
     {
-        input.Enable();
+        dashAction.performed += OnDashPressed;
 
-        input.Player.Dash.performed += OnDashPressed;
+        moveAction.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
+        moveAction.canceled += ctx => moveInput = Vector2.zero;
 
-        input.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
-        input.Player.Move.canceled += ctx => moveInput = Vector2.zero;
-
-        input.Player.R1.performed += ctx => StartCombo();
-        input.Player.L1.performed += ctx => ExecuteCombo();
+        r1Action.performed += ctx => StartCombo();
+        l1Action.performed += ctx => ExecuteCombo();
     }
     void OnDashPressed(InputAction.CallbackContext ctx)
     {
@@ -155,7 +176,7 @@ public class RunController : MonoBehaviour
 
     void OnDisable()
     {
-        input.Disable();
+        dashAction.performed -= OnDashPressed;
     }
 
     void Start()
@@ -173,6 +194,11 @@ public class RunController : MonoBehaviour
 
         if (boostIndicator != null)
             boostIndicator.SetActive(true);
+        if (pointerController != null)
+        {
+            pointerController.Init(playerInput);
+        }
+        qteTimer = qteDelay;
     }
 
     void Update()
@@ -229,6 +255,28 @@ public class RunController : MonoBehaviour
                 // hanya hidupkan indikator jika tidak sedang QTE cooldown
                 if (!boostLocked && boostIndicator != null)
                     boostIndicator.SetActive(true);
+            }
+        }
+        Debug.Log(moveInput);
+
+        if (!qteTriggered)
+        {
+            qteTimer -= Time.deltaTime;
+
+            if (qteTimer <= 0f)
+            {
+                qteTriggered = true;
+
+                if (staminaQTE != null)
+                {
+                    Debug.Log("Trigger QTE dari RunController");
+
+                    //staminaQTE.StartQTE(); // 🔥 panggil QTE
+                }
+                else
+                {
+                    Debug.LogError("StaminaQTE belum di-assign!");
+                }
             }
         }
     }
@@ -343,6 +391,11 @@ public class RunController : MonoBehaviour
         Vector3 move =
             transform.forward * currentSpeed +
             transform.right * currentTurnForce;
+
+        if (wallBounce != null)
+        {
+            wallBounce.SetMoveDirection(move.normalized);
+        }
 
         Vector3 velocity = move + Vector3.up * yVelocity;
         controller.Move(velocity * Time.deltaTime);
@@ -471,17 +524,15 @@ public class RunController : MonoBehaviour
     {
         if (PlayerAnimator == null) return;
 
-        // jika player tidak bergerak
-        if (currentSpeed <= 0.05f)
+        float speedValue = currentSpeed;
+
+        // animator utama
+        PlayerAnimator.SetFloat("Speed", speedValue);
+
+        // animator kedua
+        if (SecondaryAnimator != null)
         {
-            PlayerAnimator.speed = 0f;
-        }
-        else
-        {
-            if (isDashing)
-                PlayerAnimator.speed = 1.7f;
-            else
-                PlayerAnimator.speed = 1f;
+            SecondaryAnimator.SetFloat("Speed", speedValue);
         }
     }
 }
