@@ -41,6 +41,7 @@ public class RunController : MonoBehaviour
 
     [Header("Animator")]
     public Animator PlayerAnimator;
+    public Animator SecondaryAnimator; 
 
     [Header("Dash Camera Effect")]
     public float dashCameraBackDistance = 1.5f;
@@ -523,17 +524,15 @@ public class RunController : MonoBehaviour
     {
         if (PlayerAnimator == null) return;
 
-        // jika player tidak bergerak
-        if (currentSpeed <= 0.05f)
+        float speedValue = currentSpeed;
+
+        // animator utama
+        PlayerAnimator.SetFloat("Speed", speedValue);
+
+        // animator kedua
+        if (SecondaryAnimator != null)
         {
-            PlayerAnimator.speed = 0f;
-        }
-        else
-        {
-            if (isDashing)
-                PlayerAnimator.speed = 1.7f;
-            else
-                PlayerAnimator.speed = 1f;
+            SecondaryAnimator.SetFloat("Speed", speedValue);
         }
     }
 }
