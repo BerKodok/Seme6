@@ -75,7 +75,11 @@ public class RunController : MonoBehaviour
     public bool canUseBoost = false;
 
     private CharacterController controller;
-    private PlayerInputActions input;
+    private PlayerInput playerInput;
+    private InputAction moveAction;
+    private InputAction dashAction;
+    private InputAction r1Action;
+    private InputAction l1Action;
 
     private Vector2 moveInput;
     private float currentSpeed;
@@ -115,24 +119,30 @@ public class RunController : MonoBehaviour
     public float DashCooldownTimer => dashCooldownTimer;
     public float CurrentSpeedometerMax => currentSpeedometerMax;
 
+    public PointerController pointerController;
+
     void Awake()
     {
         controller = GetComponent<CharacterController>();
-        input = new PlayerInputActions();
+        playerInput = GetComponent<PlayerInput>();
+
+        moveAction = playerInput.actions["Move"];
+        dashAction = playerInput.actions["Dash"];
+        r1Action = playerInput.actions["R1"];
+        l1Action = playerInput.actions["L1"];
+
         wallBounce = GetComponent<WallBounce>();
     }
 
     void OnEnable()
     {
-        input.Enable();
+        dashAction.performed += OnDashPressed;
 
-        input.Player.Dash.performed += OnDashPressed;
+        moveAction.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
+        moveAction.canceled += ctx => moveInput = Vector2.zero;
 
-        input.Player.Move.performed += ctx => moveInput = ctx.ReadValue<Vector2>();
-        input.Player.Move.canceled += ctx => moveInput = Vector2.zero;
-
-        input.Player.R1.performed += ctx => StartCombo();
-        input.Player.L1.performed += ctx => ExecuteCombo();
+        r1Action.performed += ctx => StartCombo();
+        l1Action.performed += ctx => ExecuteCombo();
     }
     void OnDashPressed(InputAction.CallbackContext ctx)
     {
@@ -157,7 +167,7 @@ public class RunController : MonoBehaviour
 
     void OnDisable()
     {
-        input.Disable();
+        dashAction.performed -= OnDashPressed;
     }
 
     void Start()
@@ -175,6 +185,11 @@ public class RunController : MonoBehaviour
 
         if (boostIndicator != null)
             boostIndicator.SetActive(true);
+        if (pointerController != null)
+        {
+            pointerController.Init(playerInput);
+        }
+
     }
 
     void Update()
@@ -233,6 +248,7 @@ public class RunController : MonoBehaviour
                     boostIndicator.SetActive(true);
             }
         }
+        Debug.Log(moveInput);
     }
 
     void StartCombo()

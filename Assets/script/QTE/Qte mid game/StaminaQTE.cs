@@ -15,12 +15,13 @@ public class StaminaQTETrigger : MonoBehaviour
     public GameObject qteCanvas;
     public GameObject countdownCanvas;
 
-    public RunController playerController;
-
     public RectTransform pointerTransform;
-    private Vector3 targetPosition;
 
-    private PlayerInputActions input;
+    private PlayerInput playerInput;
+    private InputAction dpadAction;
+    private RunController playerController;
+
+    private Vector3 targetPosition;
     private Vector2 currentDirection;
 
     float countdownTimer = 10f;
@@ -30,32 +31,21 @@ public class StaminaQTETrigger : MonoBehaviour
 
     private bool qteActive = false;
     private bool qteFinished = false;
-
     private bool triggerUsed = false;
-
-    void Awake()
-    {
-        input = new PlayerInputActions();
-    }
-
-    void OnEnable()
-    {
-        input.Enable();
-        input.Player.Dpad.performed += OnDpadPressed;
-    }
-
-    void OnDisable()
-    {
-        input.Player.Dpad.performed -= OnDpadPressed;
-        input.Disable();
-    }
 
     void Start()
     {
+        if (pointA == null || pointB == null || pointerTransform == null)
+        {
+            Debug.LogError("QTE Setup belum lengkap!");
+            enabled = false;
+            return;
+        }
+
         targetPosition = pointB.position;
 
-        qteCanvas.SetActive(false);
-        countdownCanvas.SetActive(false);
+        if (qteCanvas != null) qteCanvas.SetActive(false);
+        if (countdownCanvas != null) countdownCanvas.SetActive(false);
     }
 
     void Update()
@@ -65,18 +55,36 @@ public class StaminaQTETrigger : MonoBehaviour
         RunCountdown();
 
         if (countdownTimer > 0f)
-        {
             MovePointer();
-        }
     }
 
     void OnTriggerEnter(Collider other)
     {
         if (triggerUsed) return;
-
         if (!other.CompareTag("Player")) return;
 
         triggerUsed = true;
+
+        // 🔥 AMBIL PlayerInput dari player yang masuk
+        playerInput = other.GetComponent<PlayerInput>();
+        playerController = other.GetComponent<RunController>();
+
+        if (playerInput == null)
+        {
+            Debug.LogError("PlayerInput tidak ditemukan di player!");
+            return;
+        }
+
+        // 🔥 ambil action dari player ini
+        dpadAction = playerInput.actions["Dpad"];
+
+        if (dpadAction == null)
+        {
+            Debug.LogError("Action Dpad tidak ditemukan!");
+            return;
+        }
+
+        dpadAction.performed += OnDpadPressed;
 
         StartQTE();
     }
@@ -89,8 +97,8 @@ public class StaminaQTETrigger : MonoBehaviour
 
         countdownTimer = 10f;
 
-        qteCanvas.SetActive(true);
-        countdownCanvas.SetActive(true);
+        if (qteCanvas != null) qteCanvas.SetActive(true);
+        if (countdownCanvas != null) countdownCanvas.SetActive(true);
 
         GenerateRandomArrow();
     }
@@ -102,7 +110,9 @@ public class StaminaQTETrigger : MonoBehaviour
         countdownTimer -= Time.deltaTime;
 
         int display = Mathf.CeilToInt(countdownTimer);
-        countdownText.text = display.ToString();
+
+        if (countdownText != null)
+            countdownText.text = display.ToString();
 
         if (countdownTimer <= 0f)
         {
@@ -115,8 +125,12 @@ public class StaminaQTETrigger : MonoBehaviour
     {
         qteActive = false;
 
-        qteCanvas.SetActive(false);
-        countdownCanvas.SetActive(false);
+        if (qteCanvas != null) qteCanvas.SetActive(false);
+        if (countdownCanvas != null) countdownCanvas.SetActive(false);
+
+        // 🔥 penting: lepas event biar tidak nempel
+        if (dpadAction != null)
+            dpadAction.performed -= OnDpadPressed;
     }
 
     void MovePointer()
@@ -127,13 +141,9 @@ public class StaminaQTETrigger : MonoBehaviour
             moveSpeed * Time.deltaTime);
 
         if (Vector3.Distance(pointerTransform.position, pointA.position) < 0.1f)
-        {
             targetPosition = pointB.position;
-        }
         else if (Vector3.Distance(pointerTransform.position, pointB.position) < 0.1f)
-        {
             targetPosition = pointA.position;
-        }
     }
 
     void GenerateRandomArrow()
@@ -144,22 +154,22 @@ public class StaminaQTETrigger : MonoBehaviour
         {
             case 0:
                 currentDirection = Vector2.up;
-                arrowText.text = "↑";
+                if (arrowText != null) arrowText.text = "↑";
                 break;
 
             case 1:
                 currentDirection = Vector2.down;
-                arrowText.text = "↓";
+                if (arrowText != null) arrowText.text = "↓";
                 break;
 
             case 2:
                 currentDirection = Vector2.left;
-                arrowText.text = "←";
+                if (arrowText != null) arrowText.text = "←";
                 break;
 
             case 3:
                 currentDirection = Vector2.right;
-                arrowText.text = "→";
+                if (arrowText != null) arrowText.text = "→";
                 break;
         }
     }
@@ -168,9 +178,9 @@ public class StaminaQTETrigger : MonoBehaviour
     {
         if (!qteActive || qteFinished) return;
 
-        Vector2 inputDir = ctx.ReadValue<Vector2>();
+        Vector2 inputDir = ctx.ReadValue<Vector2>().normalized;
 
-        if (inputDir != currentDirection)
+        if (Vector2.Dot(inputDir, currentDirection) < 0.9f)
         {
             FailQTE();
             return;
@@ -209,9 +219,7 @@ public class StaminaQTETrigger : MonoBehaviour
         qteFinished = true;
 
         if (playerController != null)
-        {
             playerController.AddStamina(40f);
-        }
 
         EndQTE();
     }
