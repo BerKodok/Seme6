@@ -4,18 +4,22 @@ using TMPro;
 
 public class StaminaQTETrigger : MonoBehaviour
 {
+    [Header("Pointer")]
     public Transform pointA;
     public Transform pointB;
     public RectTransform safeZone;
-    public float moveSpeed = 100f;
+    public RectTransform pointerTransform;
 
+    [Header("UI")]
     public TMP_Text arrowText;
     public TMP_Text countdownText;
-
     public GameObject qteCanvas;
     public GameObject countdownCanvas;
 
-    public RectTransform pointerTransform;
+    [Header("Settings")]
+    public float moveSpeed = 100f;
+    public float countdownDuration = 10f;
+    public int maxCombo = 4;
 
     private PlayerInput playerInput;
     private InputAction dpadAction;
@@ -24,10 +28,8 @@ public class StaminaQTETrigger : MonoBehaviour
     private Vector3 targetPosition;
     private Vector2 currentDirection;
 
-    float countdownTimer = 10f;
-
-    private int comboCount = 0;
-    private int maxCombo = 4;
+    private float countdownTimer;
+    private int comboCount;
 
     private bool qteActive = false;
     private bool qteFinished = false;
@@ -37,15 +39,15 @@ public class StaminaQTETrigger : MonoBehaviour
     {
         if (pointA == null || pointB == null || pointerTransform == null)
         {
-            Debug.LogError("QTE Setup belum lengkap!");
+            Debug.LogError("❌ QTE Setup belum lengkap di: " + gameObject.name);
             enabled = false;
             return;
         }
 
         targetPosition = pointB.position;
 
-        if (qteCanvas != null) qteCanvas.SetActive(false);
-        if (countdownCanvas != null) countdownCanvas.SetActive(false);
+        if (qteCanvas) qteCanvas.SetActive(false);
+        if (countdownCanvas) countdownCanvas.SetActive(false);
     }
 
     void Update()
@@ -63,42 +65,58 @@ public class StaminaQTETrigger : MonoBehaviour
         if (triggerUsed) return;
         if (!other.CompareTag("Player")) return;
 
+        Debug.Log("🔥 Player masuk trigger QTE");
+
         triggerUsed = true;
 
-        // 🔥 AMBIL PlayerInput dari player yang masuk
+        // AMBIL COMPONENT DARI PLAYER
         playerInput = other.GetComponent<PlayerInput>();
         playerController = other.GetComponent<RunController>();
 
         if (playerInput == null)
         {
-            Debug.LogError("PlayerInput tidak ditemukan di player!");
+            Debug.LogError("❌ PlayerInput tidak ditemukan!");
             return;
         }
 
-        // 🔥 ambil action dari player ini
+        // AMBIL ACTION
         dpadAction = playerInput.actions["Dpad"];
 
         if (dpadAction == null)
         {
-            Debug.LogError("Action Dpad tidak ditemukan!");
+            Debug.LogError("❌ Action Dpad tidak ditemukan!");
             return;
         }
 
+        // AKTIFKAN INPUT
+        dpadAction.Enable();
         dpadAction.performed += OnDpadPressed;
 
         StartQTE();
     }
 
-    void StartQTE()
+    // 🔥 WAJIB PUBLIC (POINT 1)
+    public void StartQTE()
     {
+        Debug.Log("✅ QTE DIMULAI");
+
         qteActive = true;
         qteFinished = false;
         comboCount = 0;
 
-        countdownTimer = 10f;
+        countdownTimer = countdownDuration;
 
-        if (qteCanvas != null) qteCanvas.SetActive(true);
-        if (countdownCanvas != null) countdownCanvas.SetActive(true);
+        if (qteCanvas)
+        {
+            qteCanvas.SetActive(true);
+            Debug.Log("Canvas QTE ON");
+        }
+
+        if (countdownCanvas)
+        {
+            countdownCanvas.SetActive(true);
+            Debug.Log("Countdown ON");
+        }
 
         GenerateRandomArrow();
     }
@@ -109,10 +127,8 @@ public class StaminaQTETrigger : MonoBehaviour
 
         countdownTimer -= Time.deltaTime;
 
-        int display = Mathf.CeilToInt(countdownTimer);
-
-        if (countdownText != null)
-            countdownText.text = display.ToString();
+        if (countdownText)
+            countdownText.text = Mathf.CeilToInt(countdownTimer).ToString();
 
         if (countdownTimer <= 0f)
         {
@@ -123,14 +139,18 @@ public class StaminaQTETrigger : MonoBehaviour
 
     void EndQTE()
     {
+        Debug.Log("⛔ QTE SELESAI");
+
         qteActive = false;
 
-        if (qteCanvas != null) qteCanvas.SetActive(false);
-        if (countdownCanvas != null) countdownCanvas.SetActive(false);
+        if (qteCanvas) qteCanvas.SetActive(false);
+        if (countdownCanvas) countdownCanvas.SetActive(false);
 
-        // 🔥 penting: lepas event biar tidak nempel
         if (dpadAction != null)
+        {
             dpadAction.performed -= OnDpadPressed;
+            dpadAction.Disable();
+        }
     }
 
     void MovePointer()
@@ -152,25 +172,10 @@ public class StaminaQTETrigger : MonoBehaviour
 
         switch (rand)
         {
-            case 0:
-                currentDirection = Vector2.up;
-                if (arrowText != null) arrowText.text = "↑";
-                break;
-
-            case 1:
-                currentDirection = Vector2.down;
-                if (arrowText != null) arrowText.text = "↓";
-                break;
-
-            case 2:
-                currentDirection = Vector2.left;
-                if (arrowText != null) arrowText.text = "←";
-                break;
-
-            case 3:
-                currentDirection = Vector2.right;
-                if (arrowText != null) arrowText.text = "→";
-                break;
+            case 0: currentDirection = Vector2.up; arrowText.text = "↑"; break;
+            case 1: currentDirection = Vector2.down; arrowText.text = "↓"; break;
+            case 2: currentDirection = Vector2.left; arrowText.text = "←"; break;
+            case 3: currentDirection = Vector2.right; arrowText.text = "→"; break;
         }
     }
 
@@ -186,7 +191,12 @@ public class StaminaQTETrigger : MonoBehaviour
             return;
         }
 
-        if (RectTransformUtility.RectangleContainsScreenPoint(safeZone, pointerTransform.position, null))
+        Camera cam = Camera.main;
+
+        if (RectTransformUtility.RectangleContainsScreenPoint(
+            safeZone,
+            RectTransformUtility.WorldToScreenPoint(cam, pointerTransform.position),
+            cam))
         {
             comboCount++;
 
@@ -208,6 +218,8 @@ public class StaminaQTETrigger : MonoBehaviour
     {
         if (qteFinished) return;
 
+        Debug.Log("❌ QTE GAGAL");
+
         qteFinished = true;
         EndQTE();
     }
@@ -215,6 +227,8 @@ public class StaminaQTETrigger : MonoBehaviour
     void FinishQTE()
     {
         if (qteFinished) return;
+
+        Debug.Log("🎉 QTE BERHASIL");
 
         qteFinished = true;
 

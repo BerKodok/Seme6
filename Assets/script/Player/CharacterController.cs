@@ -55,6 +55,14 @@ public class RunController : MonoBehaviour
     public float maxTurnForce = 15f;       // batas maksimal banting
     public float turnRecoverySpeed = 8f;   // seberapa cepat pulih kalau kembali ke tengah
 
+    [Header("QTE Trigger")]
+    public float qteDelay = 5f;
+    public StaminaQTETrigger staminaQTE; // drag object QTE di sini
+
+    private float qteTimer;
+    private bool qteTriggered = false;
+
+
     private float currentTurnForce = 0f;
 
     public bool squareLocked = false;
@@ -189,7 +197,7 @@ public class RunController : MonoBehaviour
         {
             pointerController.Init(playerInput);
         }
-
+        qteTimer = qteDelay;
     }
 
     void Update()
@@ -249,6 +257,27 @@ public class RunController : MonoBehaviour
             }
         }
         Debug.Log(moveInput);
+
+        if (!qteTriggered)
+        {
+            qteTimer -= Time.deltaTime;
+
+            if (qteTimer <= 0f)
+            {
+                qteTriggered = true;
+
+                if (staminaQTE != null)
+                {
+                    Debug.Log("Trigger QTE dari RunController");
+
+                    //staminaQTE.StartQTE(); // 🔥 panggil QTE
+                }
+                else
+                {
+                    Debug.LogError("StaminaQTE belum di-assign!");
+                }
+            }
+        }
     }
 
     void StartCombo()
