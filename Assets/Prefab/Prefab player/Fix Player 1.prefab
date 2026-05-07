@@ -10000,7 +10000,7 @@ Transform:
   m_GameObject: {fileID: 4080960819771008232}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 2, y: 9.1, z: 176}
+  m_LocalPosition: {x: 6, y: 9.205137, z: 167}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10114,8 +10114,8 @@ MonoBehaviour:
   gravity: -25
   speedSmooth: 6
   maxStamina: 100
-  staminaCostPerCombo: 5
-  staminaRegen: 10
+  staminaCostPerCombo: 3
+  staminaRegen: 15
   boostPercentPerStack: 5
   maxStacks: 3630
   stackDecayDelay: 0.5
@@ -10136,9 +10136,9 @@ MonoBehaviour:
   cameraMoveSpeed: 5
   stabilitySystem: {fileID: 6033694825735843301}
   unstableTurnStrength: 4
-  turnAcceleration: 8
-  maxTurnForce: 10
-  turnRecoverySpeed: 4
+  turnAcceleration: 10
+  maxTurnForce: 12
+  turnRecoverySpeed: 6
   qteDelay: 3
   staminaQTE: {fileID: 1018242675738045021}
   squareLocked: 0
