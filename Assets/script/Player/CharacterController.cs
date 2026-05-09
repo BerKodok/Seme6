@@ -58,7 +58,7 @@ public class RunController : MonoBehaviour
 
     [Header("QTE Trigger")]
     public float qteDelay = 5f;
-    public StaminaQTETrigger staminaQTE; // drag object QTE di sini
+    public StaminaQTE staminaQTE;
 
     private float qteTimer;
     private bool qteTriggered = false;

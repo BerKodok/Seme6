@@ -2,180 +2,199 @@
 using UnityEngine.InputSystem;
 using TMPro;
 
-public class StaminaQTETrigger : MonoBehaviour
+public class StaminaQTE : MonoBehaviour
 {
     [Header("Pointer")]
-    public Transform pointA;
-    public Transform pointB;
+    public RectTransform pointA;
+    public RectTransform pointB;
     public RectTransform safeZone;
     public RectTransform pointerTransform;
 
     [Header("UI")]
     public TMP_Text arrowText;
     public TMP_Text countdownText;
+
     public GameObject qteCanvas;
-    public GameObject countdownCanvas;
 
     [Header("Settings")]
-    public float moveSpeed = 100f;
-    public float countdownDuration = 10f;
+    public float moveSpeed = 500f;
+    public float countdown = 6f;
+
     public int maxCombo = 4;
+    public float staminaReward = 40f;
+
+    [Header("Auto Trigger")]
+    public bool autoStartQTE = true;
+
+    [Tooltip("QTE muncul setelah berapa detik")]
+    public float qteDelay = 10f;
+
+    [Tooltip("Apakah QTE muncul terus berulang")]
+    public bool repeatQTE = true;
+
+    private float qteTimer;
+
+    private int comboCount = 0;
+
+    private Vector2 targetPosition;
+    private Vector2 currentDirection;
 
     private PlayerInput playerInput;
     private InputAction dpadAction;
-    private RunController playerController;
 
-    private Vector3 targetPosition;
-    private Vector2 currentDirection;
-
-    private float countdownTimer;
-    private int comboCount;
+    private RunController controller;
 
     private bool qteActive = false;
     private bool qteFinished = false;
-    private bool triggerUsed = false;
+
+    private float timer;
+
+    public bool IsActive => qteActive;
+
+    void Awake()
+    {
+        if (qteCanvas != null)
+            qteCanvas.SetActive(false);
+    }
 
     void Start()
     {
-        if (pointA == null || pointB == null || pointerTransform == null)
-        {
-            Debug.LogError("❌ QTE Setup belum lengkap di: " + gameObject.name);
-            enabled = false;
-            return;
-        }
+        controller = GetComponent<RunController>();
+        playerInput = GetComponent<PlayerInput>();
 
-        targetPosition = pointB.position;
-
-        if (qteCanvas) qteCanvas.SetActive(false);
-        if (countdownCanvas) countdownCanvas.SetActive(false);
+        qteTimer = qteDelay;
     }
 
     void Update()
     {
+        HandleAutoQTE();
+
         if (!qteActive) return;
 
-        RunCountdown();
+        MovePointer();
 
-        if (countdownTimer > 0f)
-            MovePointer();
+        timer -= Time.deltaTime;
+
+        if (countdownText != null)
+            countdownText.text = Mathf.CeilToInt(timer).ToString();
+
+        if (timer <= 0f)
+        {
+            timer = 0f;
+            FailQTE();
+        }
     }
 
-    void OnTriggerEnter(Collider other)
+    void HandleAutoQTE()
     {
-        if (triggerUsed) return;
-        if (!other.CompareTag("Player")) return;
+        if (!autoStartQTE) return;
 
-        Debug.Log("🔥 Player masuk trigger QTE");
+        if (qteActive) return;
 
-        triggerUsed = true;
+        qteTimer -= Time.deltaTime;
 
-        // AMBIL COMPONENT DARI PLAYER
-        playerInput = other.GetComponent<PlayerInput>();
-        playerController = other.GetComponent<RunController>();
-
-        if (playerInput == null)
+        if (qteTimer <= 0f)
         {
-            Debug.LogError("❌ PlayerInput tidak ditemukan!");
-            return;
+            StartQTE();
+
+            if (repeatQTE)
+                qteTimer = qteDelay;
+            else
+                autoStartQTE = false;
         }
-
-        // AMBIL ACTION
-        dpadAction = playerInput.actions["Dpad"];
-
-        if (dpadAction == null)
-        {
-            Debug.LogError("❌ Action Dpad tidak ditemukan!");
-            return;
-        }
-
-        // AKTIFKAN INPUT
-        dpadAction.Enable();
-        dpadAction.performed += OnDpadPressed;
-
-        StartQTE();
     }
 
-    // 🔥 WAJIB PUBLIC (POINT 1)
     public void StartQTE()
     {
-        Debug.Log("✅ QTE DIMULAI");
+        if (qteActive) return;
 
         qteActive = true;
         qteFinished = false;
+
         comboCount = 0;
 
-        countdownTimer = countdownDuration;
+        timer = countdown;
 
-        if (qteCanvas)
-        {
+        pointerTransform.anchoredPosition =
+            pointA.anchoredPosition;
+
+        targetPosition = pointB.anchoredPosition;
+
+        if (qteCanvas != null)
             qteCanvas.SetActive(true);
-            Debug.Log("Canvas QTE ON");
-        }
 
-        if (countdownCanvas)
-        {
-            countdownCanvas.SetActive(true);
-            Debug.Log("Countdown ON");
-        }
+        // freeze player
+        controller.enabled = false;
 
-        GenerateRandomArrow();
-    }
+        if (controller.PlayerAnimator != null)
+            controller.PlayerAnimator.speed = 0f;
 
-    void RunCountdown()
-    {
-        if (countdownTimer <= 0f) return;
-
-        countdownTimer -= Time.deltaTime;
-
-        if (countdownText)
-            countdownText.text = Mathf.CeilToInt(countdownTimer).ToString();
-
-        if (countdownTimer <= 0f)
-        {
-            countdownTimer = 0f;
-            EndQTE();
-        }
-    }
-
-    void EndQTE()
-    {
-        Debug.Log("⛔ QTE SELESAI");
-
-        qteActive = false;
-
-        if (qteCanvas) qteCanvas.SetActive(false);
-        if (countdownCanvas) countdownCanvas.SetActive(false);
+        dpadAction = playerInput.actions["Dpad"];
 
         if (dpadAction != null)
         {
-            dpadAction.performed -= OnDpadPressed;
-            dpadAction.Disable();
+            dpadAction.Enable();
+            dpadAction.performed += OnDpadPressed;
         }
+
+        GenerateArrow();
+
+        Debug.Log("AUTO STAMINA QTE START");
     }
 
     void MovePointer()
     {
-        pointerTransform.position = Vector3.MoveTowards(
-            pointerTransform.position,
-            targetPosition,
-            moveSpeed * Time.deltaTime);
+        pointerTransform.anchoredPosition =
+            Vector2.MoveTowards(
+                pointerTransform.anchoredPosition,
+                targetPosition,
+                moveSpeed * Time.deltaTime);
 
-        if (Vector3.Distance(pointerTransform.position, pointA.position) < 0.1f)
-            targetPosition = pointB.position;
-        else if (Vector3.Distance(pointerTransform.position, pointB.position) < 0.1f)
-            targetPosition = pointA.position;
+        float distA =
+            Vector2.Distance(
+                pointerTransform.anchoredPosition,
+                pointA.anchoredPosition);
+
+        float distB =
+            Vector2.Distance(
+                pointerTransform.anchoredPosition,
+                pointB.anchoredPosition);
+
+        if (distA < 5f)
+        {
+            targetPosition = pointB.anchoredPosition;
+        }
+        else if (distB < 5f)
+        {
+            targetPosition = pointA.anchoredPosition;
+        }
     }
 
-    void GenerateRandomArrow()
+    void GenerateArrow()
     {
         int rand = Random.Range(0, 4);
 
         switch (rand)
         {
-            case 0: currentDirection = Vector2.up; arrowText.text = "↑"; break;
-            case 1: currentDirection = Vector2.down; arrowText.text = "↓"; break;
-            case 2: currentDirection = Vector2.left; arrowText.text = "←"; break;
-            case 3: currentDirection = Vector2.right; arrowText.text = "→"; break;
+            case 0:
+                currentDirection = Vector2.up;
+                arrowText.text = "↑";
+                break;
+
+            case 1:
+                currentDirection = Vector2.down;
+                arrowText.text = "↓";
+                break;
+
+            case 2:
+                currentDirection = Vector2.left;
+                arrowText.text = "←";
+                break;
+
+            case 3:
+                currentDirection = Vector2.right;
+                arrowText.text = "→";
+                break;
         }
     }
 
@@ -183,30 +202,33 @@ public class StaminaQTETrigger : MonoBehaviour
     {
         if (!qteActive || qteFinished) return;
 
-        Vector2 inputDir = ctx.ReadValue<Vector2>().normalized;
+        Vector2 inputDir =
+            ctx.ReadValue<Vector2>().normalized;
 
+        // salah arah
         if (Vector2.Dot(inputDir, currentDirection) < 0.9f)
         {
             FailQTE();
             return;
         }
 
-        Camera cam = Camera.main;
-
+        // pointer masuk safe zone
         if (RectTransformUtility.RectangleContainsScreenPoint(
             safeZone,
-            RectTransformUtility.WorldToScreenPoint(cam, pointerTransform.position),
-            cam))
+            pointerTransform.position,
+            null))
         {
             comboCount++;
 
+            Debug.Log("COMBO: " + comboCount);
+
             if (comboCount >= maxCombo)
             {
-                FinishQTE();
+                SuccessQTE();
                 return;
             }
 
-            GenerateRandomArrow();
+            GenerateArrow();
         }
         else
         {
@@ -214,27 +236,46 @@ public class StaminaQTETrigger : MonoBehaviour
         }
     }
 
+    void SuccessQTE()
+    {
+        if (qteFinished) return;
+
+        qteFinished = true;
+        qteActive = false;
+
+        controller.AddStamina(staminaReward);
+
+        Debug.Log("STAMINA BERHASIL");
+
+        EndQTE();
+    }
+
     void FailQTE()
     {
         if (qteFinished) return;
 
-        Debug.Log("❌ QTE GAGAL");
-
         qteFinished = true;
+        qteActive = false;
+
+        Debug.Log("QTE GAGAL");
+
         EndQTE();
     }
 
-    void FinishQTE()
+    void EndQTE()
     {
-        if (qteFinished) return;
+        if (qteCanvas != null)
+            qteCanvas.SetActive(false);
 
-        Debug.Log("🎉 QTE BERHASIL");
+        if (dpadAction != null)
+            dpadAction.performed -= OnDpadPressed;
 
-        qteFinished = true;
+        if (controller != null)
+        {
+            controller.enabled = true;
 
-        if (playerController != null)
-            playerController.AddStamina(40f);
-
-        EndQTE();
+            if (controller.PlayerAnimator != null)
+                controller.PlayerAnimator.speed = 1f;
+        }
     }
 }
