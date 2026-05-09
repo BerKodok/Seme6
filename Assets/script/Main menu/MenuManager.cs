@@ -15,6 +15,7 @@ public class MenuManager : MonoBehaviour
     public AudioClip mainMenuBGM;
     public AudioClip characterBGM;
 
+    private Coroutine musicCoroutine;
     public float fadeDuration = 0.5f;
 
     // ?? SFX
@@ -30,26 +31,51 @@ public class MenuManager : MonoBehaviour
 
     public void SwitchMusic(AudioClip newClip)
     {
-        StartCoroutine(FadeMusic(newClip));
+        // Kalau clip sama, jangan ulang
+        if (bgmSource.clip == newClip)
+            return;
+
+        // Stop coroutine sebelumnya
+        if (musicCoroutine != null)
+        {
+            StopCoroutine(musicCoroutine);
+        }
+
+        // Jalankan coroutine baru
+        musicCoroutine = StartCoroutine(FadeMusic(newClip));
     }
 
     IEnumerator FadeMusic(AudioClip newClip)
     {
-        float startVolume = bgmSource.volume;
+        float startVolume = 1f;
 
+        // Fade Out
         while (bgmSource.volume > 0)
         {
-            bgmSource.volume -= startVolume * Time.deltaTime / fadeDuration;
+            bgmSource.volume -= Time.deltaTime / fadeDuration;
+
+            if (bgmSource.volume < 0)
+                bgmSource.volume = 0;
+
             yield return null;
         }
 
+        // Ganti musik
         bgmSource.Stop();
         bgmSource.clip = newClip;
         bgmSource.Play();
 
+        // Reset volume
+        bgmSource.volume = 0;
+
+        // Fade In
         while (bgmSource.volume < startVolume)
         {
-            bgmSource.volume += startVolume * Time.deltaTime / fadeDuration;
+            bgmSource.volume += Time.deltaTime / fadeDuration;
+
+            if (bgmSource.volume > startVolume)
+                bgmSource.volume = startVolume;
+
             yield return null;
         }
     }
@@ -76,6 +102,7 @@ public class MenuManager : MonoBehaviour
 
         OptionPanel.SetActive(true);
         MenuPanel.SetActive(false);
+        
     }
 
     public void PlayGame()
@@ -91,6 +118,7 @@ public class MenuManager : MonoBehaviour
         CameraManager.SwitchCamera(MenuCam);
         MenuPanel.SetActive(true);
         OptionPanel.SetActive(false);
+        SwitchMusic(mainMenuBGM);
     }
 
     public void QuitGame()
