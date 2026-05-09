@@ -193,6 +193,7 @@ Transform:
   m_Children:
   - {fileID: 7200097060141182880}
   - {fileID: 9041504615270209855}
+  - {fileID: 8269653484947653616}
   m_Father: {fileID: 4254263274274125099}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &5782938916636881690
@@ -4781,7 +4782,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 0
+  moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0
@@ -4898,7 +4899,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 1, g: 0.34385082, b: 0, a: 0.6039216}
+      maxColor: {r: 0.5924529, g: 0.5924529, b: 0.5924529, a: 0.6039216}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -9806,7 +9807,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7949731792638051606}
-  - {fileID: 8269653484947653616}
   - {fileID: 3768649113755101306}
   - {fileID: 2369838633565198367}
   - {fileID: 5197215185518994612}
@@ -9930,7 +9930,7 @@ MonoBehaviour:
   dashBonusPercentPerStack: 10
   dashDuration: 3
   dashCooldown: 6
-  stunDuration: 3
+  stunDuration: 2
   PlayerAnimator: {fileID: 345422166030940803}
   SecondaryAnimator: {fileID: 5722529950918939340}
   dashCameraBackDistance: 1.5
@@ -13303,11 +13303,11 @@ Transform:
   m_GameObject: {fileID: 6929548179921222655}
   serializedVersion: 2
   m_LocalRotation: {x: 0.13890499, y: -0, z: -0, w: 0.9903058}
-  m_LocalPosition: {x: 0, y: 1.96, z: -2.8}
+  m_LocalPosition: {x: 0.04386902, y: 1.9270029, z: -2.9149857}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 4254263274274125099}
+  m_Father: {fileID: 7949731792638051606}
   m_LocalEulerAnglesHint: {x: 15.969, y: 0, z: 0}
 --- !u!20 &352836535724356309
 Camera:

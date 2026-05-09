@@ -495,6 +495,9 @@ public class RunController : MonoBehaviour
 
         if (PlayerAnimator != null)
             PlayerAnimator.SetTrigger("Stun");
+
+        if (SecondaryAnimator != null)
+            SecondaryAnimator.SetTrigger("Stun");
     }
 
     void UpdateStun()
