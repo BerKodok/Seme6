@@ -1,93 +1,143 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Unity.Cinemachine;
 
-public class SCPlayerMovements : MonoBehaviour
+public class SideMovements : MonoBehaviour
 {
-   /// ///////////////////////////////////////////////////////
-    /// PLAYER BIT
+/// ///////////////////////////////////////////////////////
+/// PLAYER BIT
     private Rigidbody rb;
-    
-    //private PlayerInput playerInput;
-    //private PlayerInputActions playerInputActions;
     private InputActionAsset inputAsset;
+    public PlayerInput assignedInput;
+    public bool useAssignedInput = false;
     private InputActionMap player;
     private InputAction moveCharacter, moveMouse, moveJump;
     [SerializeField] private float groundCheckDistance = 0.15f;
     [SerializeField] private LayerMask groundMask;
     private bool OnGround;
-    /// ///////////////////////////////////////////////////////
-    /// CAMERA BIT
+/// ///////////////////////////////////////////////////////
+/// CAMERA BIT
     [SerializeField] private Transform camTransform;
     [SerializeField] private float cameraSensitivity = 0.1f;
     //[SerializeField] private CinemachineCamera playerCam;
     private float cameraYaw;
     private float cameraPitch;
 
-    /// ///////////////////////////////////////////////////////
-    /// KEYBOARD BIT
+/// ///////////////////////////////////////////////////////
+/// KEYBOARD BIT
     [SerializeField] private float f_jump = 5f;
     [SerializeField] private float f_speed = 5f;
     [SerializeField] private float f_acceleration = 20f;
 
-    /// ///////////////////////////////////////////////////////
-    /// NETWORK
+/// ///////////////////////////////////////////////////////
+/// NETWORK
     //private NetworkVariable<int> randomNumber = new NetworkVariable<int>(1);
 
     /// ///////////////////////////////////////////////////////
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        inputAsset = this.GetComponent<PlayerInput>().actions;
-        player = inputAsset.FindActionMap("LHS_Player");
+
         //camTransform, playerCam = GetComponentInChildren<cin>
 
         //playerInputActions = new PlayerInputActions();
 
     }
     /// ///////////////////////////////////////////////////////
-    void OnEnable()
-    {
-        //if (!IsOwner) return;
-        // playerInputActions.ThePlayer.Enable();
-        // playerInputActions.ThePlayer.Jump.performed += Jump;       
-        moveJump = player.FindAction("Jump"); moveJump.performed += DoJump;
-        moveCharacter = player.FindAction("Movement");
-        moveMouse = player.FindAction("Look");
-        player.Enable();
-    }
-
+    /// 
+    // void OnEnable()
+    // {
+        
+    // }
     void OnDisable()
     {
-        // playerInputActions.ThePlayer.Jump.performed -= Jump;   
-        // playerInputActions.ThePlayer.Disable();   
-        moveJump.performed -= DoJump;
-        player.Disable();
+        if (moveJump != null)
+        {
+            moveJump.performed -= DoJump;
+        }
+
+        if (player != null)
+        {
+            player.Disable();
+        }
     }
 
 
-    /// ///////////////////////////////////////////////////////
-    /// 
+/// ///////////////////////////////////////////////////////
+/// START
+    void Start()
+    {
 
+    }
+    public void InitializeInput()
+    {
+        if (assignedInput == null)
+        {
+            Debug.LogError("assignedInput is NULL on " + gameObject.name);
+            return;
+        }
 
+        inputAsset = assignedInput.actions;
+
+        player = inputAsset.FindActionMap("LHS_Player");
+
+        if (player == null)
+        {
+            Debug.LogError("ActionMap not found");
+            return;
+        }
+
+        moveJump = player.FindAction("Jump");
+        moveCharacter = player.FindAction("Movement");
+        moveMouse = player.FindAction("Look");
+
+        if (moveJump != null)
+        {
+            moveJump.performed += DoJump;
+        }
+
+        //player.Enable();
+    }
     private void FixedUpdate()
     {
+
+        //if (camTransform == null) return;
+        
 
         OnGround = Physics.Raycast
         (transform.position + Vector3.up * 0.05f,
         Vector3.down, groundCheckDistance, groundMask); // RAYCAST GROUND CHECK
         ///////////////////////////////////////////////////////
 
+        if(moveCharacter == null) return;
+
         Vector2 vectorInput = moveCharacter.ReadValue<Vector2>(); // INPUT SYSTEM READ TO V2
 
-        Vector3 camForward = camTransform.forward; // Z POS CAM
+        Vector3 camForward;
+        Vector3 camRight;
+
+        if (camTransform != null)
+        {
+            camForward = camTransform.forward;
+            camRight = camTransform.right;
+        }
+        else
+        {
+            camForward = Vector3.forward;
+            camRight = Vector3.right;
+        }
+
         camForward.y = 0f;
         camForward.Normalize();
 
-        Vector3 camRight = camTransform.right; // X POS CAM
-        camRight.y = 0f;
+        camRight.y =0f;
         camRight.Normalize();
+        // Vector3 camForward = camTransform.forward; // Z POS CAM
+        // camForward.y = 0f;
+        // camForward.Normalize();
+
+        // Vector3 camRight = camTransform.right; // X POS CAM
+        // camRight.y = 0f;
+        // camRight.Normalize();
 
         Vector3 move = camForward * vectorInput.y + camRight * vectorInput.x; // CALC moveV3 from CAMV3 & ISV2 
         move = Vector3.ClampMagnitude(move, 1f);
@@ -118,13 +168,20 @@ public class SCPlayerMovements : MonoBehaviour
 
         rb.MoveRotation(Quaternion.Euler(0f, cameraYaw, 0f)); // ROTATE RB Y BASED OF CAM
 
+        if (moveMouse == null) return;
         Vector2 lookInput = moveMouse.ReadValue<Vector2>(); // INPUT SYSTEM CAM READ TO V2
         cameraYaw += lookInput.x * cameraSensitivity; //* Time.deltaTime; // CAM X V2 ADD TO = cameraYaw
 
         cameraPitch -= lookInput.y * cameraSensitivity;
         cameraPitch = Mathf.Clamp(cameraPitch, -80f, 80f);
 
-        camTransform.localRotation = Quaternion.Euler(cameraPitch, 0f, 0f);
+        //camTransform.localRotation = Quaternion.Euler(cameraPitch, 0f, 0f);
+        
+        if (camTransform != null)
+        {
+            camTransform.localRotation =
+                Quaternion.Euler(cameraPitch, 0f, 0f);
+        }
     }
 
 

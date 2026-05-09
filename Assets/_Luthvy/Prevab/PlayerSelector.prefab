@@ -75,8 +75,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 483e781812afc9c4c82b3c61fd08c35f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CharaterSelectManager
-  characterSprites:
-  - {fileID: 21300000, guid: 7aff8498faab716459e641cff906fc30, type: 3}
-  - {fileID: 21300000, guid: a83ae1ba7cac3c14c9593540e027bacc, type: 3}
-  - {fileID: 21300000, guid: 2b31fa946c2654f4ab50f4931cde6370, type: 3}
-  characterPortrait: {fileID: 0}
+  characterDisplayPrefabs:
+  - {fileID: 5797271533908154376, guid: a8d77a4361a75874dbb4b9bfc73d2959, type: 3}
+  - {fileID: 5797271533908154376, guid: 4032a8d718825494fa9d4ee6abaf0163, type: 3}
+  - {fileID: 5797271533908154376, guid: 626641b1d5a3bcc499dfe13d754a4138, type: 3}
+  mainPreviewPoint: {fileID: 0}
+  sidePreviewPoint: {fileID: 0}
+  readyString: {fileID: 0}

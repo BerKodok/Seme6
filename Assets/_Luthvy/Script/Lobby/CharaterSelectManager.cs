@@ -10,21 +10,26 @@ public class CharacterSelectManager : MonoBehaviour
 /// MANAGER PROPERTIES
 
     [Header("Manager Settings")]
-    public static int[] SelectedCharacter = new int[4];
-    private static bool[] isReady = new bool[4];
+    public static int[,] SelectedCharacter = new int[3, 2];
+    public static InputDevice[] PlayerDevices = new InputDevice[3];
+    private static bool[] isReady = new bool[3];
     public int CurrentIndex {get; set;} = 0;
     private int playerIndex;
     private float inputCooldown = 0.2f;
     private float lastMoveTime;
-    
+    private int currentSelectionSlot = 0;
     private bool isLockedIn = false;
+    private GameObject currentMainPreview;
+    private GameObject currentSidePreview;
     //private int justJoinIN = 0;
 /////////////////////////////////////////////////////////////////////////////////
 /// UI PROPERTIES 
 
     [Header("Visual Settings")]
-    public Sprite[] characterSprites;
-    public Image characterPortrait;
+    public GameObject[] characterDisplayPrefabs;
+
+    public Transform mainPreviewPoint;
+    public Transform sidePreviewPoint;
     public TMPro.TextMeshProUGUI readyString;
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -36,19 +41,26 @@ public class CharacterSelectManager : MonoBehaviour
         isLockedIn = false;
         //justJoinIN = false;
         playerIndex = GetComponent<PlayerInput>().playerIndex;
+        PlayerDevices[playerIndex] = GetComponent<PlayerInput>().devices[0];
 
         if (playerIndex == 0)
         {
             isReady[0] = false;
             isReady[1] = false;
+            isReady[2] = false;
 
-            SelectedCharacter[0] = 0;
-            SelectedCharacter[1] = 0;
+            SelectedCharacter[0,0] = 0;
+            SelectedCharacter[0,1] = 0;
+
+            SelectedCharacter[1,0] = 0;
+            SelectedCharacter[1,1] = 0;
+
+            SelectedCharacter[2,0] = 0;
+            SelectedCharacter[2,1] = 0;
         }
     }
 /////////////////////////////////////////////////////////////////////////////////
 /// START
-    
     void Start()
     {
         UpdateUI();
@@ -77,7 +89,7 @@ public class CharacterSelectManager : MonoBehaviour
             lastMoveTime = Time.time;
         }
 
-        int count = characterSprites.Length;
+        int count = characterDisplayPrefabs.Length;
         if (count == 0) return;
 
         CurrentIndex = (CurrentIndex + count) % count;
@@ -89,44 +101,102 @@ public class CharacterSelectManager : MonoBehaviour
 /// CUSTOM VOIDS
     public void OnCS_Submit()
     {
-        // LOCK CHECK
-        if (isLockedIn) {UpdateUI(); return;}
-        isLockedIn = true;
-        //justJoinIN++;
-        //Debug.Log(justJoinIN);
-        //
+        if (isLockedIn)
+        {
+            UpdateUI();
+            return;
+        }
 
-        SelectedCharacter[playerIndex] = CurrentIndex;
+        // Save current selection
+        SelectedCharacter[playerIndex, currentSelectionSlot] = CurrentIndex;
+
+        // Move to next selection slot
+        currentSelectionSlot++;
+
+        // Finished MAIN selection
+        if (currentSelectionSlot == 1)
+        {
+            UpdateUI();
+            UpdateReadyUI();
+            return;
+        }
+
+        // Finished SIDE selection
+        isLockedIn = true;
+
         isReady[playerIndex] = true;
 
         UpdateReadyUI();
-        
+
         int readyCount = 0;
 
         for (int i = 0; i < isReady.Length; i++)
         {
             if (isReady[i]) readyCount++;
         }
-        
+
         int playerCount = FindFirstObjectByType<LobbyManager>().GetPlayerCount();
+
         if (playerCount >= 2 && readyCount == playerCount)
         {
-            SceneManager.LoadScene("SceneLegacy");
+            SceneManager.LoadScene("SceneLegacy"); //Scence Change
         }
     }
 /////////////////////////////////////////////////////////////////////////////////
 /// UI BITS
     void UpdateUI()
     {
-        if (characterPortrait != null && characterSprites.Length != 0)
+        // MAIN selection
+        if (currentSelectionSlot == 0)
         {
-            characterPortrait.sprite = characterSprites[CurrentIndex];
+            if (currentMainPreview != null)
+            {
+                Destroy(currentMainPreview);
+            }
+
+            currentMainPreview = Instantiate(
+                characterDisplayPrefabs[CurrentIndex],
+                mainPreviewPoint.position,
+                mainPreviewPoint.rotation
+            );
+
+            currentMainPreview.transform.SetParent(mainPreviewPoint);
+        }
+
+        // SIDE selection
+        else
+        {
+            if (currentSidePreview != null)
+            {
+                Destroy(currentSidePreview);
+            }
+
+            currentSidePreview = Instantiate(
+                characterDisplayPrefabs[CurrentIndex],
+                sidePreviewPoint.position,
+                sidePreviewPoint.rotation
+            );
+
+            currentSidePreview.transform.SetParent(sidePreviewPoint);
         }
     }
 
     void UpdateReadyUI()
     {
-        if (isLockedIn) {readyString.text = "Ready";readyString.color = Color.limeGreen;}
-        else {readyString.text = "Selecting..."; readyString.color = Color.white;}
+        if (isLockedIn)
+        {
+            readyString.text = "Ready";
+            readyString.color = Color.green;
+        }
+        else if (currentSelectionSlot == 0)
+        {
+            readyString.text = "Selecting Main...";
+            readyString.color = Color.white;
+        }
+        else
+        {
+            readyString.text = "Selecting Side...";
+            readyString.color = Color.yellow;
+        }
     }
 }
