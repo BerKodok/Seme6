@@ -152,6 +152,17 @@ public class RunController : MonoBehaviour
 
         r1Action.performed += ctx => StartCombo();
         l1Action.performed += ctx => ExecuteCombo();
+
+        // hidupkan animator lagi
+        if (PlayerAnimator != null)
+        {
+            PlayerAnimator.speed = 1f;
+        }
+
+        if (SecondaryAnimator != null)
+        {
+            SecondaryAnimator.speed = 1f;
+        }
     }
     void OnDashPressed(InputAction.CallbackContext ctx)
     {
@@ -177,6 +188,18 @@ public class RunController : MonoBehaviour
     void OnDisable()
     {
         dashAction.performed -= OnDashPressed;
+
+        // stop animator utama
+        if (PlayerAnimator != null)
+        {
+            PlayerAnimator.speed = 0f;
+        }
+
+        // stop animator kedua
+        if (SecondaryAnimator != null)
+        {
+            SecondaryAnimator.speed = 0f;
+        }
     }
 
     void Start()
@@ -489,7 +512,7 @@ public class RunController : MonoBehaviour
 
         Debug.Log("Square Pressed");
 
-        // isi aksi square di sini (attack / boost / dll)
+        
     }
 
     public void LockSquare(float time)
