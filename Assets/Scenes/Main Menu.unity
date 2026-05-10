@@ -2414,9 +2414,9 @@ MonoBehaviour:
   MenuPanel: {fileID: 2044747068}
   OptionPanel: {fileID: 252387856}
   bgmSource: {fileID: 1806732743}
-  mainMenuBGM: {fileID: 8300000, guid: f5f4d25e08c33544cb5893803c1987c6, type: 3}
-  characterBGM: {fileID: 8300000, guid: ffccbd4b882535a48a663a35a5b9a149, type: 3}
-  fadeDuration: 0.8
+  mainMenuBGM: {fileID: 8300000, guid: 3669caacdf527b64fb7004290042a01a, type: 3}
+  characterBGM: {fileID: 8300000, guid: 0b6bc827f093b7e48976494dcdc0e72f, type: 3}
+  fadeDuration: 1.5
   sfxSource: {fileID: 358113681}
   clickSFX: {fileID: 8300000, guid: 4cc4851a578a0754fa42d621d579d4b2, type: 3}
 --- !u!4 &189967863
@@ -20898,8 +20898,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
   bgmSource: {fileID: 1806732743}
-  mainMenuBGM: {fileID: 8300000, guid: f5f4d25e08c33544cb5893803c1987c6, type: 3}
-  characterBGM: {fileID: 8300000, guid: ffccbd4b882535a48a663a35a5b9a149, type: 3}
+  mainMenuBGM: {fileID: 8300000, guid: 3669caacdf527b64fb7004290042a01a, type: 3}
+  characterBGM: {fileID: 8300000, guid: 0b6bc827f093b7e48976494dcdc0e72f, type: 3}
 --- !u!82 &1806732743
 AudioSource:
   m_ObjectHideFlags: 0
