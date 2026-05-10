@@ -4,8 +4,9 @@ using UnityEngine.UI;
 
 public class LobbyManager : MonoBehaviour
 {
-    public Image[] portraitSlots;
-    public TMPro.TextMeshProUGUI[] readyBox;
+    public Transform[] mainPortraitWorldPoints;
+    public Transform[] sidePortraitWorldPoints;
+    public TMPro.TextMeshProUGUI[] statusBox;
     private int playerCount = 0;
     public static int FinalPlayerCount;
 
@@ -15,10 +16,11 @@ public class LobbyManager : MonoBehaviour
 
         var selector = player.GetComponent<CharacterSelectManager>();
 
-        selector.characterPortrait = portraitSlots[index];
-        selector.readyString = readyBox[index];
+        selector.mainPreviewPoint = mainPortraitWorldPoints[index];
+        selector.sidePreviewPoint = sidePortraitWorldPoints[index];
+        selector.readyString = statusBox[index];
 
-        playerCount++;
+        playerCount = Mathf.Max(playerCount, index + 1);
         FinalPlayerCount = playerCount;
     }
 

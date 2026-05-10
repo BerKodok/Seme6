@@ -635,7 +635,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 466974041}
-  - component: {fileID: 466974040}
+  - component: {fileID: 466974043}
   - component: {fileID: 466974042}
   m_Layer: 0
   m_Name: $Global
@@ -644,66 +644,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &466974040
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 466974039}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 621567455fd1c4ceb811cc8a00b6a1a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_NotificationBehavior: 3
-  m_MaxPlayerCount: 4
-  m_AllowJoining: 0
-  m_JoinBehavior: 2
-  m_PlayerJoinedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_PlayerLeftEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_JoinAction:
-    m_UseReference: 0
-    m_Action:
-      m_Name: Join
-      m_Type: 0
-      m_ExpectedControlType: 
-      m_Id: e661550f-f357-49e4-b91b-46c95b19b991
-      m_Processors: 
-      m_Interactions: 
-      m_SingletonActionBindings:
-      - m_Name: 
-        m_Id: ade672fb-9a11-4d69-91ad-fc9fc9a5acd2
-        m_Path: <Gamepad>/start
-        m_Interactions: 
-        m_Processors: 
-        m_Groups: 
-        m_Action: Join
-        m_Flags: 0
-      - m_Name: 
-        m_Id: e0a6568c-b5c2-472c-a0f4-b2ead6591755
-        m_Path: <Keyboard>/anyKey
-        m_Interactions: 
-        m_Processors: 
-        m_Groups: 
-        m_Action: Join
-        m_Flags: 0
-      m_Flags: 0
-    m_Reference: {fileID: 0}
-  m_PlayerPrefab: {fileID: 0}
-  m_SplitScreen: 1
-  m_MaintainAspectRatioInSplitScreen: 0
-  m_FixedNumberOfSplitScreens: -1
-  m_SplitScreenRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
 --- !u!4 &466974041
 Transform:
   m_ObjectHideFlags: 0
@@ -731,15 +671,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e451a6a63aabc84ba56bbe371891207, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  characterPrefabs:
+  MainCharacterPrefabs:
   - {fileID: 5797271533908154376, guid: 42c0ff6afa800584d9c7ca1736e0d3b6, type: 3}
-  - {fileID: 5797271533908154376, guid: 3331e1cf8302c2744aadd486c921c167, type: 3}
   - {fileID: 5797271533908154376, guid: 9c262d691890eaf49963ba854e792f17, type: 3}
+  - {fileID: 5797271533908154376, guid: 3331e1cf8302c2744aadd486c921c167, type: 3}
+  SideCharacterPrefabs:
+  - {fileID: 5797271533908154376, guid: b947060e4808a0b4ba61d0e6d2dd3f2e, type: 3}
+  - {fileID: 5797271533908154376, guid: 283c76ceef7a6774fa443e3131be8b8b, type: 3}
+  - {fileID: 5797271533908154376, guid: a55949c28f7d1e446b8b93e44e8eca61, type: 3}
   spawnPoints:
   - {fileID: 1982039491}
   - {fileID: 54073673}
   - {fileID: 1007553932}
   - {fileID: 731232446}
+--- !u!114 &466974043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 466974039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 621567455fd1c4ceb811cc8a00b6a1a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInputManager
+  m_NotificationBehavior: 0
+  m_MaxPlayerCount: 3
+  m_AllowJoining: 1
+  m_JoinBehavior: 2
+  m_PlayerJoinedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_PlayerLeftEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_JoinAction:
+    m_UseReference: 0
+    m_Action:
+      m_Name: 
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 2b039c11-56b3-4dd9-92c7-77b43e83f229
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  m_PlayerPrefab: {fileID: 0}
+  m_SplitScreen: 1
+  m_MaintainAspectRatioInSplitScreen: 0
+  m_FixedNumberOfSplitScreens: -1
+  m_SplitScreenRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
 --- !u!1 &471981206
 GameObject:
   m_ObjectHideFlags: 0
