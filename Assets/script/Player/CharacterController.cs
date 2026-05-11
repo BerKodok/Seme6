@@ -60,6 +60,8 @@ public class RunController : MonoBehaviour
     public float qteDelay = 5f;
     public StaminaQTE staminaQTE;
 
+
+
     private float qteTimer;
     private bool qteTriggered = false;
 
@@ -217,10 +219,19 @@ public class RunController : MonoBehaviour
 
         if (boostIndicator != null)
             boostIndicator.SetActive(true);
+
+        // INIT POINTER QTE
         if (pointerController != null)
         {
             pointerController.Init(playerInput);
         }
+
+        // INIT STAMINA QTE
+        if (staminaQTE != null)
+        {
+            staminaQTE.Init(playerInput);
+        }
+
         qteTimer = qteDelay;
     }
 
@@ -294,7 +305,7 @@ public class RunController : MonoBehaviour
                 {
                     Debug.Log("Trigger QTE dari RunController");
 
-                    //staminaQTE.StartQTE(); // 🔥 panggil QTE
+                    staminaQTE.StartQTE();
                 }
                 else
                 {

@@ -15,6 +15,7 @@ public class StaminaQTE : MonoBehaviour
     public TMP_Text countdownText;
 
     public GameObject qteCanvas;
+    public GameObject countdownCanvas;
 
     [Header("Settings")]
     public float moveSpeed = 500f;
@@ -25,11 +26,7 @@ public class StaminaQTE : MonoBehaviour
 
     [Header("Auto Trigger")]
     public bool autoStartQTE = true;
-
-    [Tooltip("QTE muncul setelah berapa detik")]
     public float qteDelay = 10f;
-
-    [Tooltip("Apakah QTE muncul terus berulang")]
     public bool repeatQTE = true;
 
     private float qteTimer;
@@ -42,12 +39,16 @@ public class StaminaQTE : MonoBehaviour
     private PlayerInput playerInput;
     private InputAction dpadAction;
 
-    private RunController controller;
+    public RunController controller;
 
     private bool qteActive = false;
     private bool qteFinished = false;
 
     private float timer;
+
+    // INPUT BUFFER
+    private Vector2 lastInput;
+    private bool inputPressed;
 
     public bool IsActive => qteActive;
 
@@ -59,17 +60,39 @@ public class StaminaQTE : MonoBehaviour
 
     void Start()
     {
-        controller = GetComponent<RunController>();
         playerInput = GetComponent<PlayerInput>();
 
         qteTimer = qteDelay;
+
+        if (playerInput != null)
+        {
+            dpadAction = playerInput.actions["Dpad"];
+
+            if (dpadAction != null)
+            {
+                dpadAction.Enable();
+
+                Debug.Log("STAMINA QTE DPAD READY");
+            }
+            else
+            {
+                Debug.LogError("ACTION DPAD TIDAK DITEMUKAN!");
+            }
+        }
+        else
+        {
+            Debug.LogError("PLAYER INPUT TIDAK ADA!");
+        }
     }
 
     void Update()
     {
         HandleAutoQTE();
 
-        if (!qteActive) return;
+        if (!qteActive)
+            return;
+
+        ReadDpadInput();
 
         MovePointer();
 
@@ -85,11 +108,37 @@ public class StaminaQTE : MonoBehaviour
         }
     }
 
+    void ReadDpadInput()
+    {
+        if (dpadAction == null)
+            return;
+
+        Vector2 input = dpadAction.ReadValue<Vector2>();
+
+        // tekan sekali
+        if (input != Vector2.zero && !inputPressed)
+        {
+            inputPressed = true;
+
+            lastInput = input.normalized;
+
+            CheckInput(lastInput);
+        }
+
+        // reset saat dilepas
+        if (input == Vector2.zero)
+        {
+            inputPressed = false;
+        }
+    }
+
     void HandleAutoQTE()
     {
-        if (!autoStartQTE) return;
+        if (!autoStartQTE)
+            return;
 
-        if (qteActive) return;
+        if (qteActive)
+            return;
 
         qteTimer -= Time.deltaTime;
 
@@ -97,16 +146,15 @@ public class StaminaQTE : MonoBehaviour
         {
             StartQTE();
 
-            if (repeatQTE)
-                qteTimer = qteDelay;
-            else
+            if (!repeatQTE)
                 autoStartQTE = false;
         }
     }
 
     public void StartQTE()
     {
-        if (qteActive) return;
+        if (qteActive)
+            return;
 
         qteActive = true;
         qteFinished = false;
@@ -123,19 +171,8 @@ public class StaminaQTE : MonoBehaviour
         if (qteCanvas != null)
             qteCanvas.SetActive(true);
 
-        // freeze player
-        controller.enabled = false;
-
-        if (controller.PlayerAnimator != null)
-            controller.PlayerAnimator.speed = 0f;
-
-        dpadAction = playerInput.actions["Dpad"];
-
-        if (dpadAction != null)
-        {
-            dpadAction.Enable();
-            dpadAction.performed += OnDpadPressed;
-        }
+        if (countdownCanvas != null)
+            countdownCanvas.SetActive(true);
 
         GenerateArrow();
 
@@ -198,25 +235,28 @@ public class StaminaQTE : MonoBehaviour
         }
     }
 
-    void OnDpadPressed(InputAction.CallbackContext ctx)
+    void CheckInput(Vector2 inputDir)
     {
-        if (!qteActive || qteFinished) return;
+        if (!qteActive || qteFinished)
+            return;
 
-        Vector2 inputDir =
-            ctx.ReadValue<Vector2>().normalized;
+        Debug.Log("INPUT MASUK: " + inputDir);
 
-        // salah arah
+        // cek arah
         if (Vector2.Dot(inputDir, currentDirection) < 0.9f)
         {
+            Debug.Log("SALAH ARAH");
             FailQTE();
             return;
         }
 
-        // pointer masuk safe zone
-        if (RectTransformUtility.RectangleContainsScreenPoint(
-            safeZone,
-            pointerTransform.position,
-            null))
+        bool insideSafeZone =
+            RectTransformUtility.RectangleContainsScreenPoint(
+                safeZone,
+                pointerTransform.position,
+                null);
+
+        if (insideSafeZone)
         {
             comboCount++;
 
@@ -232,18 +272,29 @@ public class StaminaQTE : MonoBehaviour
         }
         else
         {
+            Debug.Log("POINTER TIDAK MASUK SAFEZONE");
             FailQTE();
         }
     }
 
     void SuccessQTE()
     {
-        if (qteFinished) return;
+        if (qteFinished)
+            return;
 
         qteFinished = true;
         qteActive = false;
 
-        controller.AddStamina(staminaReward);
+        if (controller != null)
+        {
+            controller.AddStamina(staminaReward);
+
+            Debug.Log("Tambah stamina: " + staminaReward);
+        }
+        else
+        {
+            Debug.LogError("RUN CONTROLLER NULL!");
+        }
 
         Debug.Log("STAMINA BERHASIL");
 
@@ -252,7 +303,8 @@ public class StaminaQTE : MonoBehaviour
 
     void FailQTE()
     {
-        if (qteFinished) return;
+        if (qteFinished)
+            return;
 
         qteFinished = true;
         qteActive = false;
@@ -267,15 +319,43 @@ public class StaminaQTE : MonoBehaviour
         if (qteCanvas != null)
             qteCanvas.SetActive(false);
 
-        if (dpadAction != null)
-            dpadAction.performed -= OnDpadPressed;
+        if (countdownCanvas != null)
+            countdownCanvas.SetActive(false);
 
-        if (controller != null)
+        if (repeatQTE)
         {
-            controller.enabled = true;
+            qteTimer = qteDelay;
+        }
+    }
 
-            if (controller.PlayerAnimator != null)
-                controller.PlayerAnimator.speed = 1f;
+    public void Init(PlayerInput inputFromPlayer)
+    {
+        playerInput = inputFromPlayer;
+
+        if (playerInput == null)
+        {
+            Debug.LogError("PlayerInput NULL!");
+            return;
+        }
+
+        dpadAction = playerInput.actions["Dpad"];
+
+        if (dpadAction == null)
+        {
+            Debug.LogError("Action Dpad tidak ditemukan!");
+            return;
+        }
+
+        dpadAction.Enable();
+
+        Debug.Log("StaminaQTE Input Connected");
+    }
+
+    void OnDestroy()
+    {
+        if (dpadAction != null)
+        {
+            dpadAction.Disable();
         }
     }
 }

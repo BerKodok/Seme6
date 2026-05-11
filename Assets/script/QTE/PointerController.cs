@@ -67,7 +67,7 @@ public class PointerController : MonoBehaviour
     {
         RunCountdown();
 
-        
+
         if (qteActive && countdownTimer > 0f)
             MovePointer();
     }
@@ -118,7 +118,7 @@ public class PointerController : MonoBehaviour
 
         if (!qteActive || qteFinished) return;
     }
-    
+
     void MovePointer()
     {
         pointerTransform.anchoredPosition = Vector2.MoveTowards(
@@ -169,7 +169,7 @@ public class PointerController : MonoBehaviour
 
         Vector2 inputDir = ctx.ReadValue<Vector2>().normalized;
 
-        
+
         if (Vector2.Dot(inputDir, currentDirection) < 0.9f)
         {
             FailQTE();
@@ -251,9 +251,21 @@ public class PointerController : MonoBehaviour
             return;
         }
 
-        dpadAction.Enable(); // 🔥 WAJIB
+        dpadAction.Enable();
+
+        // HAPUS DULU supaya tidak double subscribe
+        dpadAction.performed -= OnDpadPressed;
+
+        // SUBSCRIBE SEKALI
         dpadAction.performed += OnDpadPressed;
 
         Debug.Log("Dpad siap untuk player: " + playerInput.playerIndex);
+    }
+    void OnDestroy()
+    {
+        if (dpadAction != null)
+        {
+            dpadAction.performed -= OnDpadPressed;
+        }
     }
 }
