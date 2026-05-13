@@ -1040,8 +1040,6 @@ MonoBehaviour:
   countdownCanvas: {fileID: 2285939886262180953}
   playerController: {fileID: 450684524711761699}
   pointerTransform: {fileID: 4571648571235052867}
-  audioSource: {fileID: 0}
-  countdownBeep: {fileID: 0}
 --- !u!1 &866439726225739070
 GameObject:
   m_ObjectHideFlags: 0
@@ -9788,6 +9786,7 @@ GameObject:
   - component: {fileID: 6033694825735843301}
   - component: {fileID: 7813700233710569623}
   - component: {fileID: 3992716690922884704}
+  - component: {fileID: -3153603265779782345}
   m_Layer: 0
   m_Name: Fix Player 2
   m_TagString: Player
@@ -9944,6 +9943,16 @@ MonoBehaviour:
   turnRecoverySpeed: 6
   qteDelay: 3
   staminaQTE: {fileID: 2332581396533655690}
+  sprintFootstepSFX: {fileID: 8300000, guid: 05b1635f59cb53e43a5314fc180ca607, type: 3}
+  boostSFX: {fileID: 8300000, guid: 0eee2bf28abedb9428933f4f3311c4ad, type: 3}
+  fallDownSFX: {fileID: 0}
+  sprintFootstepVolume: 0.35
+  boostSFXVolume: 0.35
+  fallDownSFXVolume: 0.35
+  countdownFinished: 0
+  minFootstepSpeed: 7
+  leftFootStepTime: 0.18
+  rightFootStepTime: 0.68
   squareLocked: 0
   boostReady: 0
   boostIndicator: {fileID: 1542495110294747716}
@@ -10010,6 +10019,14 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 352836535724356309}
+--- !u!81 &-3153603265779782345
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4080960819771008232}
+  m_Enabled: 1
 --- !u!1 &4107978292209917856
 GameObject:
   m_ObjectHideFlags: 0
@@ -11546,7 +11563,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8369264182653503868
 Transform:
   m_ObjectHideFlags: 0
@@ -11583,7 +11600,7 @@ MonoBehaviour:
   arrowText: {fileID: 83023704591944134}
   countdownText: {fileID: 6583152714724337465}
   qteCanvas: {fileID: 987155707200704897}
-  countdownCanvas: {fileID: 7015255196056714827}
+  countdownCanvas: {fileID: 0}
   moveSpeed: 100
   countdown: 6
   maxCombo: 4
@@ -11591,7 +11608,7 @@ MonoBehaviour:
   autoStartQTE: 1
   qteDelay: 10
   repeatQTE: 1
-  controller: {fileID: 450684524711761699}
+  controller: {fileID: 0}
 --- !u!1 &5314317527256644422
 GameObject:
   m_ObjectHideFlags: 0
