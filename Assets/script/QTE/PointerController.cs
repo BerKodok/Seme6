@@ -19,6 +19,12 @@ public class PointerController : MonoBehaviour
 
     public RectTransform pointerTransform;
 
+    [Header("Sound")]
+    public AudioSource audioSource;
+    public AudioClip countdownBeep;
+
+    private bool playedThreeSound = false;
+
     private Vector2 targetPosition;
 
     private PlayerInput playerInput;
@@ -67,7 +73,6 @@ public class PointerController : MonoBehaviour
     {
         RunCountdown();
 
-
         if (qteActive && countdownTimer > 0f)
             MovePointer();
     }
@@ -82,6 +87,17 @@ public class PointerController : MonoBehaviour
 
         if (countdownText != null)
             countdownText.text = display.ToString();
+
+        // PLAY SOUND SAAT ANGKA 3
+        if (display == 3 && !playedThreeSound)
+        {
+            playedThreeSound = true;
+
+            if (audioSource != null && countdownBeep != null)
+            {
+                audioSource.PlayOneShot(countdownBeep);
+            }
+        }
 
         if (countdownTimer <= 0f)
         {
@@ -169,7 +185,6 @@ public class PointerController : MonoBehaviour
 
         Vector2 inputDir = ctx.ReadValue<Vector2>().normalized;
 
-
         if (Vector2.Dot(inputDir, currentDirection) < 0.9f)
         {
             FailQTE();
@@ -195,6 +210,7 @@ public class PointerController : MonoBehaviour
         {
             FailQTE();
         }
+
         Debug.Log("INPUT MASUK: " + ctx.ReadValue<Vector2>());
     }
 
@@ -232,7 +248,6 @@ public class PointerController : MonoBehaviour
             dpadAction.performed -= OnDpadPressed;
     }
 
-
     public void Init(PlayerInput inputFromPlayer)
     {
         playerInput = inputFromPlayer;
@@ -253,14 +268,12 @@ public class PointerController : MonoBehaviour
 
         dpadAction.Enable();
 
-        // HAPUS DULU supaya tidak double subscribe
         dpadAction.performed -= OnDpadPressed;
-
-        // SUBSCRIBE SEKALI
         dpadAction.performed += OnDpadPressed;
 
         Debug.Log("Dpad siap untuk player: " + playerInput.playerIndex);
     }
+
     void OnDestroy()
     {
         if (dpadAction != null)
