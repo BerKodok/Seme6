@@ -44,12 +44,12 @@ public class GameManager : MonoBehaviour
                     mainInput.user.UnpairDevices();
 
                     InputUser.PerformPairingWithDevice(
-                        CharacterSelectManager.PlayerDevices[i], mainInput.user);
+                        CharacterSelectManager1.PlayerDevices[i], mainInput.user);
 
                     mainInput.SwitchCurrentControlScheme(
                         "Mouse Keyboard",Keyboard.current, Mouse.current);
                 }
-                else if (CharacterSelectManager.PlayerDevices[i] is Gamepad)
+                else if (CharacterSelectManager1.PlayerDevices[i] is Gamepad)
                 {
                     mainInput.SwitchCurrentControlScheme("Gamepad", Gamepad.current);
                 }
