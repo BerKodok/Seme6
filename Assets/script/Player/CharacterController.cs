@@ -58,7 +58,9 @@ public class RunController : MonoBehaviour
 
     [Header("QTE Trigger")]
     public float qteDelay = 5f;
-    public StaminaQTETrigger staminaQTE; // drag object QTE di sini
+    public StaminaQTE staminaQTE;
+
+
 
     private float qteTimer;
     private bool qteTriggered = false;
@@ -152,6 +154,17 @@ public class RunController : MonoBehaviour
 
         r1Action.performed += ctx => StartCombo();
         l1Action.performed += ctx => ExecuteCombo();
+
+        // hidupkan animator lagi
+        if (PlayerAnimator != null)
+        {
+            PlayerAnimator.speed = 1f;
+        }
+
+        if (SecondaryAnimator != null)
+        {
+            SecondaryAnimator.speed = 1f;
+        }
     }
     void OnDashPressed(InputAction.CallbackContext ctx)
     {
@@ -177,6 +190,18 @@ public class RunController : MonoBehaviour
     void OnDisable()
     {
         dashAction.performed -= OnDashPressed;
+
+        // stop animator utama
+        if (PlayerAnimator != null)
+        {
+            PlayerAnimator.speed = 0f;
+        }
+
+        // stop animator kedua
+        if (SecondaryAnimator != null)
+        {
+            SecondaryAnimator.speed = 0f;
+        }
     }
 
     void Start()
@@ -194,10 +219,19 @@ public class RunController : MonoBehaviour
 
         if (boostIndicator != null)
             boostIndicator.SetActive(true);
+
+        // INIT POINTER QTE
         if (pointerController != null)
         {
             pointerController.Init(playerInput);
         }
+
+        // INIT STAMINA QTE
+        if (staminaQTE != null)
+        {
+            staminaQTE.Init(playerInput);
+        }
+
         qteTimer = qteDelay;
     }
 
@@ -271,7 +305,7 @@ public class RunController : MonoBehaviour
                 {
                     Debug.Log("Trigger QTE dari RunController");
 
-                    //staminaQTE.StartQTE(); // 🔥 panggil QTE
+                    staminaQTE.StartQTE();
                 }
                 else
                 {
@@ -472,6 +506,9 @@ public class RunController : MonoBehaviour
 
         if (PlayerAnimator != null)
             PlayerAnimator.SetTrigger("Stun");
+
+        if (SecondaryAnimator != null)
+            SecondaryAnimator.SetTrigger("Stun");
     }
 
     void UpdateStun()
@@ -489,7 +526,7 @@ public class RunController : MonoBehaviour
 
         Debug.Log("Square Pressed");
 
-        // isi aksi square di sini (attack / boost / dll)
+        
     }
 
     public void LockSquare(float time)
