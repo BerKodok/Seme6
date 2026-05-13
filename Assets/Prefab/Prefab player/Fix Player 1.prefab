@@ -8791,13 +8791,16 @@ MonoBehaviour:
   turnRecoverySpeed: 6
   qteDelay: 3
   staminaQTE: {fileID: 2332581396533655690}
-  sprintFootstepSFX: {fileID: 0}
-  boostSFX: {fileID: 0}
-  fallDownSFX: {fileID: 0}
-  sprintFootstepInterval: 0.28
+  sprintFootstepSFX: {fileID: 8300000, guid: 05b1635f59cb53e43a5314fc180ca607, type: 3}
+  boostSFX: {fileID: 8300000, guid: 0eee2bf28abedb9428933f4f3311c4ad, type: 3}
+  fallDownSFX: {fileID: 8300000, guid: 07c07ad644a01b143b6c4cc019584b63, type: 3}
   sprintFootstepVolume: 1
   boostSFXVolume: 1
   fallDownSFXVolume: 1
+  countdownFinished: 0
+  minFootstepSpeed: 7
+  leftFootStepTime: 0.18
+  rightFootStepTime: 0.68
   squareLocked: 0
   boostReady: 0
   boostIndicator: {fileID: 1542495110294747716}
