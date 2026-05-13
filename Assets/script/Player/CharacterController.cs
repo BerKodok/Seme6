@@ -60,6 +60,31 @@ public class RunController : MonoBehaviour
     public float qteDelay = 5f;
     public StaminaQTE staminaQTE;
 
+    [Header("Player SFX")]
+    public AudioClip sprintFootstepSFX;
+    public AudioClip boostSFX;
+    public AudioClip fallDownSFX;
+
+    public float sprintFootstepVolume = 1f;
+    public float boostSFXVolume = 1f;
+    public float fallDownSFXVolume = 1f;
+
+    [Header("Race / Countdown")]
+    public bool countdownFinished = false;
+    public float minFootstepSpeed = 7f;
+
+    private AudioSource sfxSource;
+    private AudioSource footstepSource;
+    private bool fallDownSFXPlayed = false;
+
+    [Header("Footstep Animation Sync")]
+    [Range(0f, 1f)] public float leftFootStepTime = 0.18f;
+    [Range(0f, 1f)] public float rightFootStepTime = 0.68f;
+
+
+    private int lastFootstepLoop = -1;
+    private bool leftFootPlayed = false;
+    private bool rightFootPlayed = false;
 
 
     private float qteTimer;
@@ -127,6 +152,7 @@ public class RunController : MonoBehaviour
     public float CurrentStamina => currentStamina;
     public float MaxStamina => maxStamina;
     public bool IsDashing => isDashing;
+    public bool IsStunned => isStunned;
     public float DashCooldownTimer => dashCooldownTimer;
     public float CurrentSpeedometerMax => currentSpeedometerMax;
 
@@ -212,6 +238,8 @@ public class RunController : MonoBehaviour
         currentSpeed = walkSpeed;
         currentStamina = maxStamina;
 
+        countdownFinished = true;
+
         currentSpeedometerMax = normalSpeedometerMax;
 
         if (playerCamera != null)
@@ -233,7 +261,23 @@ public class RunController : MonoBehaviour
         }
 
         qteTimer = qteDelay;
+
+
+
+        footstepSource = gameObject.AddComponent<AudioSource>();
+        footstepSource.playOnAwake = false;
+        footstepSource.loop = true;
+        footstepSource.spatialBlend = 0f;
+        footstepSource.volume = sprintFootstepVolume;
+
+        sfxSource = gameObject.AddComponent<AudioSource>();
+        sfxSource.playOnAwake = false;
+        sfxSource.loop = false;
+        sfxSource.spatialBlend = 0f;
+        sfxSource.volume = 1f;
     }
+
+
 
     void Update()
     {
@@ -249,6 +293,7 @@ public class RunController : MonoBehaviour
         CheckOverSpeed();
         UpdateStun();
         UpdateWalkAnimation();
+        HandlePlayerSFX();
 
         if (squareLocked)
         {
@@ -456,6 +501,12 @@ public class RunController : MonoBehaviour
         dashCooldownTimer = dashCooldown;
 
         currentSpeedometerMax = dashSpeedometerMax;
+
+        if (sfxSource != null && boostSFX != null)
+        {
+            Debug.Log("BOOST SFX LANGSUNG DARI RUNCONTROLLER");
+            sfxSource.PlayOneShot(boostSFX, boostSFXVolume);
+        }
     }
 
     void UpdateDash()
@@ -557,6 +608,78 @@ public class RunController : MonoBehaviour
         currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
     }
 
+    public void FinishCountdown()
+    {
+        countdownFinished = true;
+        Debug.Log("COUNTDOWN SELESAI - FOOTSTEP AKTIF");
+    }
+
+    void HandlePlayerSFX()
+    {
+        HandleSprintFootstepSFX();
+        HandleFallDownSFX();
+    }
+
+    void HandleSprintFootstepSFX()
+    {
+        if (footstepSource == null) return;
+        if (sprintFootstepSFX == null) return;
+
+        // Kalau countdown belum selesai, suara kaki tidak boleh bunyi
+        if (!countdownFinished)
+        {
+            StopFootstepSFX();
+            return;
+        }
+
+        bool canPlayFootstep =
+            !isDashing &&
+            !isStunned &&
+            currentSpeed >= minFootstepSpeed;
+
+        if (canPlayFootstep)
+        {
+            if (!footstepSource.isPlaying)
+            {
+                Debug.Log("FOOTSTEP PLAY SETELAH COUNTDOWN | Speed: " + currentSpeed);
+
+                footstepSource.clip = sprintFootstepSFX;
+                footstepSource.volume = sprintFootstepVolume;
+                footstepSource.Play();
+            }
+        }
+        else
+        {
+            StopFootstepSFX();
+        }
+    }
+
+    void StopFootstepSFX()
+    {
+        if (footstepSource != null && footstepSource.isPlaying)
+        {
+            footstepSource.Stop();
+        }
+    }
+
+    void HandleFallDownSFX()
+    {
+        if (sfxSource == null) return;
+        if (fallDownSFX == null) return;
+
+        if (isStunned && !fallDownSFXPlayed)
+        {
+            Debug.Log("FALLDOWN SFX LANGSUNG DARI RUNCONTROLLER");
+
+            sfxSource.PlayOneShot(fallDownSFX, fallDownSFXVolume);
+            fallDownSFXPlayed = true;
+        }
+
+        if (!isStunned)
+        {
+            fallDownSFXPlayed = false;
+        }
+    }
     void UpdateWalkAnimation()
     {
         if (PlayerAnimator == null) return;
