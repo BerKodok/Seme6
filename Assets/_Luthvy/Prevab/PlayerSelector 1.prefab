@@ -81,3 +81,4 @@ MonoBehaviour:
   - {fileID: 5797271533908154376, guid: 626641b1d5a3bcc499dfe13d754a4138, type: 3}
   mainPreviewPoint: {fileID: 0}
   readyString: {fileID: 0}
+  sceneStringTo: Gameplay
