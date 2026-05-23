@@ -32,7 +32,7 @@ public class GameManager1 : MonoBehaviour
             );
 
             PlayerInput playerInput =
-                playerObj.GetComponentInChildren<PlayerInput>();
+                playerObj.GetComponent<PlayerInput>();
 
             InputDevice device =
                 CharacterSelectManager1.PlayerDevices[i];
@@ -45,28 +45,40 @@ public class GameManager1 : MonoBehaviour
                 continue;
             }
 
+           
+            playerInput.neverAutoSwitchControlSchemes = true;
+
+            
             playerInput.user.UnpairDevices();
 
+            
             InputUser.PerformPairingWithDevice(
                 device,
                 playerInput.user
             );
 
-            if (device is Gamepad)
+            
+            if (device is Gamepad gamepad)
             {
                 playerInput.SwitchCurrentControlScheme(
                     "Gamepad",
-                    Gamepad.current
+                    gamepad
                 );
             }
-            else
+            else if (device is Keyboard)
             {
                 playerInput.SwitchCurrentControlScheme(
-                    "Mouse Keyboard", // "Mouse Keyboard"
+                    "Mouse Keyboard",
                     Keyboard.current,
                     Mouse.current
                 );
             }
+
+            Debug.Log(
+                "Player " + i +
+                " paired with " +
+                device.displayName
+            );
         }
     }
 }
