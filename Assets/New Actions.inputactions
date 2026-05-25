@@ -324,7 +324,7 @@
                 {
                     "name": "",
                     "id": "3dfe3756-2a2b-4bdd-aac5-2b996be833c1",
-                    "path": "<Keyboard>/anyKey",
+                    "path": "<Keyboard>/enter",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -392,7 +392,7 @@
                 {
                     "name": "",
                     "id": "9b2238ce-49e1-4d19-a26a-abbae898f1e1",
-                    "path": "<Gamepad>/start",
+                    "path": "<Gamepad>/buttonSouth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -458,7 +458,7 @@
                 {
                     "name": "",
                     "id": "086c30d6-34e0-42a4-9610-e9424de64250",
-                    "path": "<Gamepad>/buttonSouth",
+                    "path": "<Gamepad>/start",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
