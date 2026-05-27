@@ -702,6 +702,143 @@ Transform:
   - {fileID: 891087272923553898}
   m_Father: {fileID: 7960367656483352028}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &503990683241261889
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3608126591895933622}
+  - component: {fileID: 3806635624128818838}
+  - component: {fileID: 2458411960683504368}
+  - component: {fileID: 537037828913365097}
+  m_Layer: 0
+  m_Name: Camera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3608126591895933622
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 503990683241261889}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.13890499, y: -0, z: -0, w: 0.9903058}
+  m_LocalPosition: {x: 0, y: 1.96, z: -2.800003}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4254263274274125099}
+  m_LocalEulerAnglesHint: {x: 15.969, y: 0, z: 0}
+--- !u!20 &3806635624128818838
+Camera:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 503990683241261889}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_projectionMatrixMode: 1
+  m_GateFitMode: 2
+  m_FOVAxisMode: 0
+  m_Iso: 200
+  m_ShutterSpeed: 0.005
+  m_Aperture: 16
+  m_FocusDistance: 10
+  m_FocalLength: 50
+  m_BladeCount: 5
+  m_Curvature: {x: 2, y: 11}
+  m_BarrelClipping: 0.25
+  m_Anamorphism: 0
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.3
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!81 &2458411960683504368
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 503990683241261889}
+  m_Enabled: 0
+--- !u!114 &537037828913365097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 503990683241261889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalCameraData
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_TaaSettings:
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
+  m_Version: 2
 --- !u!1 &555729792391303074
 GameObject:
   m_ObjectHideFlags: 0
@@ -1373,7 +1510,7 @@ MonoBehaviour:
   countdownText: {fileID: 2416065706614523493}
   qteCanvas: {fileID: 3834445528981076379}
   countdownCanvas: {fileID: 4543423487167400433}
-  playerController: {fileID: 0}
+  playerController: {fileID: 450684524711761699}
   pointerTransform: {fileID: 5125835112489574406}
   audioSource: {fileID: 3791025346945113178}
   countdownBeep: {fileID: 8300000, guid: 43c2d8043c9ea1942aa1bb89a2371a5f, type: 3}
@@ -2589,8 +2726,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIManager
   player: {fileID: 450684524711761699}
-  staminaSlider: {fileID: 0}
-  speedSlider: {fileID: 0}
+  staminaSlider: {fileID: 2721242235858082811}
+  speedSlider: {fileID: 579050003601836001}
   dashIcon: {fileID: 0}
   dashReadyColor: {r: 1, g: 1, b: 1, a: 1}
   dashCooldownColor: {r: 0, g: 0, b: 0, a: 1}
@@ -3600,7 +3737,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6799637450963677116
 Transform:
   m_ObjectHideFlags: 0
@@ -3645,7 +3782,7 @@ MonoBehaviour:
   autoStartQTE: 1
   qteDelay: 13
   repeatQTE: 1
-  controller: {fileID: 0}
+  controller: {fileID: 450684524711761699}
 --- !u!1 &3377613696642024848
 GameObject:
   m_ObjectHideFlags: 0
@@ -9336,12 +9473,14 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 3608126591895933622}
   - {fileID: 7949731792638051606}
   - {fileID: 3768649113755101306}
   - {fileID: 2369838633565198367}
   - {fileID: 7900390345220486946}
   - {fileID: 3333164531224696488}
   - {fileID: 6799637450963677116}
+  - {fileID: 2397223755869704615}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!33 &5148097174653468856
@@ -9471,7 +9610,7 @@ MonoBehaviour:
   maxTurnForce: 4.11
   turnRecoverySpeed: 6.55
   qteDelay: 3
-  staminaQTE: {fileID: 0}
+  staminaQTE: {fileID: 8714264863888221769}
   sprintFootstepSFX: {fileID: 8300000, guid: 05b1635f59cb53e43a5314fc180ca607, type: 3}
   boostSFX: {fileID: 8300000, guid: 0eee2bf28abedb9428933f4f3311c4ad, type: 3}
   fallDownSFX: {fileID: 8300000, guid: 07c07ad644a01b143b6c4cc019584b63, type: 3}
@@ -9484,10 +9623,10 @@ MonoBehaviour:
   rightFootStepTime: 0.68
   squareLocked: 0
   boostReady: 0
-  boostIndicator: {fileID: 0}
+  boostIndicator: {fileID: 1128098995168763755}
   canUseBoost: 0
   comboWindow: 0.5
-  pointerController: {fileID: 0}
+  pointerController: {fileID: 928688435026594443}
 --- !u!114 &6033694825735843301
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9501,7 +9640,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StabilitySystem
   safeZone: 5
-  stabilitySlider: {fileID: 0}
+  stabilitySlider: {fileID: 3077448553087969869}
   driftSpeed: 12
   controlSpeed: 35
   maxOffset: 35
@@ -10452,6 +10591,135 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.0040781833, y: 0.33143744, z: 0.0960753}
     m_Extent: {x: 0.03802074, y: 0.124037385, z: 0.10960524}
   m_DirtyAABB: 0
+--- !u!1 &4856199013624251401
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2397223755869704615}
+  - component: {fileID: 7585558798588022244}
+  m_Layer: 0
+  m_Name: Footstep
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2397223755869704615
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4856199013624251401}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
+  m_LocalPosition: {x: -0.9429102, y: -9.205137, z: -28.207886}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4254263274274125099}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &7585558798588022244
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4856199013624251401}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &4891641670347636327
 GameObject:
   m_ObjectHideFlags: 0
@@ -13807,7 +14075,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 2
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 352836535724356309}
   m_PlaneDistance: 100
   m_PixelPerfect: 1
   m_ReceivesEvents: 1
