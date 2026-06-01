@@ -9607,7 +9607,7 @@ MonoBehaviour:
   stabilitySystem: {fileID: 6033694825735843301}
   unstableTurnStrength: 4
   turnAcceleration: 50
-  maxTurnForce: 4.11
+  maxTurnForce: 3.95
   turnRecoverySpeed: 6.55
   qteDelay: 3
   staminaQTE: {fileID: 8714264863888221769}
