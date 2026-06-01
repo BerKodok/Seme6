@@ -9527,12 +9527,12 @@ MonoBehaviour:
   turnRecoverySpeed: 6.55
   qteDelay: 3
   staminaQTE: {fileID: 4111196474958343407}
-  sprintFootstepSFX: {fileID: 8300000, guid: 05b1635f59cb53e43a5314fc180ca607, type: 3}
-  boostSFX: {fileID: 8300000, guid: 0eee2bf28abedb9428933f4f3311c4ad, type: 3}
-  fallDownSFX: {fileID: 8300000, guid: 07c07ad644a01b143b6c4cc019584b63, type: 3}
-  sprintFootstepVolume: 1
-  boostSFXVolume: 1
-  fallDownSFXVolume: 2
+  sprintFootstepSFX: {fileID: 8300000, guid: f8afacaed42eaf541b7875cf888ef7cf, type: 3}
+  boostSFX: {fileID: 8300000, guid: 65ea8b8edeef0b04fb4af9b9c83e45a9, type: 3}
+  fallDownSFX: {fileID: 8300000, guid: 28636020f50b2224d9c5fbb1c748540b, type: 3}
+  sprintFootstepVolume: 0.5
+  boostSFXVolume: 0.5
+  fallDownSFXVolume: 0.5
   countdownFinished: 0
   minFootstepSpeed: 7
   leftFootStepTime: 0.18
@@ -9957,7 +9957,7 @@ MonoBehaviour:
   playerController: {fileID: 450684524711761699}
   pointerTransform: {fileID: 4814354034582620656}
   audioSource: {fileID: 815674204736914731}
-  countdownBeep: {fileID: 8300000, guid: 43c2d8043c9ea1942aa1bb89a2371a5f, type: 3}
+  countdownBeep: {fileID: 8300000, guid: fd2196072ebae9e4f9ff6501e4dfad41, type: 3}
 --- !u!82 &815674204736914731
 AudioSource:
   m_ObjectHideFlags: 0
@@ -9969,7 +9969,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 43c2d8043c9ea1942aa1bb89a2371a5f, type: 3}
+  m_Resource: {fileID: 8300000, guid: fd2196072ebae9e4f9ff6501e4dfad41, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
