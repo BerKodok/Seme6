@@ -9578,13 +9578,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 060c8db7bfeb6564ebb94dca330069eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UmaAutoRunController
-  walkSpeed: 0.8
+  walkSpeed: 0.85
   maxSprintSpeed: 100
   sideSpeed: 0
   gravity: -25
   speedSmooth: 6
   maxStamina: 100
-  staminaCostPerCombo: 3
+  staminaCostPerCombo: 1.5
   staminaRegen: 15
   boostPercentPerStack: 5
   maxStacks: 3630
@@ -9607,8 +9607,8 @@ MonoBehaviour:
   stabilitySystem: {fileID: 6033694825735843301}
   unstableTurnStrength: 4
   turnAcceleration: 50
-  maxTurnForce: 3.95
-  turnRecoverySpeed: 6.55
+  maxTurnForce: 4.8
+  turnRecoverySpeed: 7
   qteDelay: 3
   staminaQTE: {fileID: 8714264863888221769}
   sprintFootstepSFX: {fileID: 8300000, guid: 05b1635f59cb53e43a5314fc180ca607, type: 3}
