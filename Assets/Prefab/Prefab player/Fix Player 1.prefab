@@ -8785,9 +8785,9 @@ MonoBehaviour:
   dashCameraBackDistance: 1.5
   cameraMoveSpeed: 5
   stabilitySystem: {fileID: 6033694825735843301}
-  unstableTurnStrength: 4
+  unstableTurnStrength: 5
   turnAcceleration: 50
-  maxTurnForce: 4.11
+  maxTurnForce: 5.2
   turnRecoverySpeed: 6.55
   qteDelay: 3
   staminaQTE: {fileID: 2332581396533655690}
