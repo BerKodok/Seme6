@@ -360,7 +360,7 @@ MonoBehaviour:
   OptionPanel: {fileID: 252387856}
   bgmSource: {fileID: 1806732743}
   mainMenuBGM: {fileID: 8300000, guid: 3669caacdf527b64fb7004290042a01a, type: 3}
-  characterBGM: {fileID: 8300000, guid: 0b6bc827f093b7e48976494dcdc0e72f, type: 3}
+  characterBGM: {fileID: 8300000, guid: d82055fd748e7a84bbb41d6b17ec372b, type: 3}
   fadeDuration: 1.5
   sfxSource: {fileID: 358113681}
   clickSFX: {fileID: 8300000, guid: 4cc4851a578a0754fa42d621d579d4b2, type: 3}

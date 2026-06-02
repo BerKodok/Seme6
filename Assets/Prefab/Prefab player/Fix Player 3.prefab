@@ -9453,6 +9453,7 @@ GameObject:
   - component: {fileID: 6033694825735843301}
   - component: {fileID: 7813700233710569623}
   - component: {fileID: 3992716690922884704}
+  - component: {fileID: -1700643279248541881}
   m_Layer: 0
   m_Name: Fix Player 3
   m_TagString: Player
@@ -9611,12 +9612,12 @@ MonoBehaviour:
   turnRecoverySpeed: 7
   qteDelay: 3
   staminaQTE: {fileID: 8714264863888221769}
-  sprintFootstepSFX: {fileID: 8300000, guid: 05b1635f59cb53e43a5314fc180ca607, type: 3}
-  boostSFX: {fileID: 8300000, guid: 0eee2bf28abedb9428933f4f3311c4ad, type: 3}
-  fallDownSFX: {fileID: 8300000, guid: 07c07ad644a01b143b6c4cc019584b63, type: 3}
-  sprintFootstepVolume: 1
-  boostSFXVolume: 1
-  fallDownSFXVolume: 2
+  sprintFootstepSFX: {fileID: 8300000, guid: f8afacaed42eaf541b7875cf888ef7cf, type: 3}
+  boostSFX: {fileID: 8300000, guid: 65ea8b8edeef0b04fb4af9b9c83e45a9, type: 3}
+  fallDownSFX: {fileID: 8300000, guid: 28636020f50b2224d9c5fbb1c748540b, type: 3}
+  sprintFootstepVolume: 0.25
+  boostSFXVolume: 0.5
+  fallDownSFXVolume: 0.07
   countdownFinished: 0
   minFootstepSpeed: 7
   leftFootStepTime: 0.18
@@ -9687,6 +9688,14 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 352836535724356309}
+--- !u!81 &-1700643279248541881
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4080960819771008232}
+  m_Enabled: 1
 --- !u!1 &4198364492174755652
 GameObject:
   m_ObjectHideFlags: 0

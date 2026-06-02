@@ -9530,9 +9530,9 @@ MonoBehaviour:
   sprintFootstepSFX: {fileID: 8300000, guid: f8afacaed42eaf541b7875cf888ef7cf, type: 3}
   boostSFX: {fileID: 8300000, guid: 65ea8b8edeef0b04fb4af9b9c83e45a9, type: 3}
   fallDownSFX: {fileID: 8300000, guid: 28636020f50b2224d9c5fbb1c748540b, type: 3}
-  sprintFootstepVolume: 0.5
+  sprintFootstepVolume: 0.25
   boostSFXVolume: 0.5
-  fallDownSFXVolume: 0.5
+  fallDownSFXVolume: 0.07
   countdownFinished: 0
   minFootstepSpeed: 7
   leftFootStepTime: 0.18
