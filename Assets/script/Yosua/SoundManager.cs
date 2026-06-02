@@ -9,7 +9,7 @@ public class SoundManager : MonoBehaviour
     public static SoundManager Instance;
 
     public Sound[] musicSound, sfxPlayer;
-    public AudioSource MainMenu, sfxPlayerr, CharacterSelection, Gameplay, Skill, Boost;
+    public AudioSource MainMenu, sfxPlayerr, CharacterSelection, Gameplay, Boost;
 
     private void Awake()
     {

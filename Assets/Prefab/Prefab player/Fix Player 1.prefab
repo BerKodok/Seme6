@@ -8759,7 +8759,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UmaAutoRunController
   walkSpeed: 1.2
-  maxSprintSpeed: 90
+  maxSprintSpeed: 120
   sideSpeed: 0
   gravity: -25
   speedSmooth: 5
@@ -8787,16 +8787,16 @@ MonoBehaviour:
   stabilitySystem: {fileID: 6033694825735843301}
   unstableTurnStrength: 5
   turnAcceleration: 50
-  maxTurnForce: 5.2
+  maxTurnForce: 3.95
   turnRecoverySpeed: 6.55
   qteDelay: 3
   staminaQTE: {fileID: 2332581396533655690}
-  sprintFootstepSFX: {fileID: 8300000, guid: 05b1635f59cb53e43a5314fc180ca607, type: 3}
-  boostSFX: {fileID: 8300000, guid: 0eee2bf28abedb9428933f4f3311c4ad, type: 3}
-  fallDownSFX: {fileID: 8300000, guid: 07c07ad644a01b143b6c4cc019584b63, type: 3}
-  sprintFootstepVolume: 1
-  boostSFXVolume: 1
-  fallDownSFXVolume: 1
+  sprintFootstepSFX: {fileID: 8300000, guid: f8afacaed42eaf541b7875cf888ef7cf, type: 3}
+  boostSFX: {fileID: 8300000, guid: 65ea8b8edeef0b04fb4af9b9c83e45a9, type: 3}
+  fallDownSFX: {fileID: 8300000, guid: 28636020f50b2224d9c5fbb1c748540b, type: 3}
+  sprintFootstepVolume: 0.25
+  boostSFXVolume: 0.5
+  fallDownSFXVolume: 0.07
   countdownFinished: 0
   minFootstepSpeed: 7
   leftFootStepTime: 0.18
