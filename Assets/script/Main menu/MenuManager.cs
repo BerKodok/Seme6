@@ -43,6 +43,7 @@ public class MenuManager : MonoBehaviour
         CameraManager.SwitchCamera(MenuCam);
         MenuPanel.SetActive(true);
         OptionPanel.SetActive(false);
+        CharSelectCanvas.SetActive(false);
         HideAllHowToPlayPanel();
         if (AudioManager.Instance != null)
         {
