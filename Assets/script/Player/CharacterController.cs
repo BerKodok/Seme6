@@ -65,6 +65,10 @@ public class RunController : MonoBehaviour
     public float boostSFXVolume = 1f;
     public float fallDownSFXVolume = 1f;
 
+    [Header("Footstep Timing")]
+    public float footstepInterval = 0.35f;
+    private float footstepTimer = 0f;
+
     [Header("Race / Countdown")]
     public bool countdownFinished = false;
     public float minFootstepSpeed = 7f;
@@ -235,7 +239,7 @@ public class RunController : MonoBehaviour
         currentSpeed = walkSpeed;
         currentStamina = maxStamina;
 
-        countdownFinished = false;
+
 
         currentSpeedometerMax = normalSpeedometerMax;
 
@@ -607,10 +611,9 @@ public class RunController : MonoBehaviour
     {
         if (AudioManager.Instance == null) return;
 
-        // Kalau countdown belum selesai, suara kaki tidak boleh bunyi
         if (!countdownFinished)
         {
-            StopFootstepSFX();
+            footstepTimer = 0f;
             return;
         }
 
@@ -619,22 +622,25 @@ public class RunController : MonoBehaviour
             !isStunned &&
             currentSpeed >= minFootstepSpeed;
 
-        if (canPlayFootstep)
+        if (!canPlayFootstep)
         {
-            AudioManager.Instance.StartFootstepLoop(sprintFootstepVolume);
+            footstepTimer = 0f;
+            return;
         }
-        else
+
+        footstepTimer -= Time.deltaTime;
+
+        if (footstepTimer <= 0f)
         {
-            StopFootstepSFX();
+            Debug.Log("FOOTSTEP PLAY LEWAT PLAYER SFX");
+            AudioManager.Instance.PlayFootstep(sprintFootstepVolume);
+            footstepTimer = footstepInterval;
         }
     }
 
     void StopFootstepSFX()
     {
-        if (AudioManager.Instance != null)
-        {
-            AudioManager.Instance.StopFootstepLoop();
-        }
+        footstepTimer = 0f;
     }
 
     void HandleFallDownSFX()
