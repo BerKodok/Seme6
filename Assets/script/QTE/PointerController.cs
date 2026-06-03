@@ -109,6 +109,8 @@ public class PointerController : MonoBehaviour
 
     void CountdownFinished()
     {
+        Debug.Log("COUNTDOWN TIMER HABIS");
+
         if (countdownCanvas != null)
             countdownCanvas.SetActive(false);
 
@@ -120,21 +122,30 @@ public class PointerController : MonoBehaviour
                 qteCanvas.SetActive(false);
         }
 
+        qteActive = false;
+
         if (playerController != null)
         {
+            Debug.Log("PLAYER CONTROLLER DITEMUKAN - AKTIFKAN FOOTSTEP");
+
             if (playerController.PlayerAnimator != null)
                 playerController.PlayerAnimator.speed = 1f;
 
-            playerController.enabled = true;
+            // PENTING: panggil FinishCountdown dulu
             playerController.FinishCountdown();
+
+            // Baru aktifkan RunController
+            playerController.enabled = true;
 
             if (qteSuccess)
                 playerController.canUseBoost = true;
             else
                 playerController.LockBoost(6f);
         }
-
-        if (!qteActive || qteFinished) return;
+        else
+        {
+            Debug.LogError("PlayerController di PointerController belum di-assign!");
+        }
     }
 
     void MovePointer()
