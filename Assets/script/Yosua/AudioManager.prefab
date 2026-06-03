@@ -33,7 +33,6 @@ Transform:
   - {fileID: 4196779821819521427}
   - {fileID: 1162057056083057290}
   - {fileID: 774789890179301628}
-  - {fileID: 3666634757974293028}
   - {fileID: 1739860568729855972}
   - {fileID: 3034641621134532884}
   m_Father: {fileID: 0}
@@ -53,7 +52,6 @@ MonoBehaviour:
   musicSource: {fileID: 1273570830210355515}
   uiSource: {fileID: 5067461555258945624}
   playerSFXSource: {fileID: 3019363820612700007}
-  footstepSource: {fileID: 0}
   environmentSource: {fileID: 3554183502362427575}
   mainMenuBGM: {fileID: 8300000, guid: 3669caacdf527b64fb7004290042a01a, type: 3}
   characterSelectBGM: {fileID: 8300000, guid: d82055fd748e7a84bbb41d6b17ec372b, type: 3}
@@ -109,7 +107,7 @@ AudioSource:
   m_GameObject: {fileID: 370570237712046435}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -3741724851811317345, guid: 629d35de1678fe447974c67124a1d8d8, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
@@ -238,7 +236,7 @@ AudioSource:
   m_GameObject: {fileID: 666095370440768722}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -385679614727244100, guid: 629d35de1678fe447974c67124a1d8d8, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
@@ -335,6 +333,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3034641621134532884}
+  - component: {fileID: 8663297315429024287}
   m_Layer: 0
   m_Name: Crowd
   m_TagString: Untagged
@@ -357,48 +356,16 @@ Transform:
   m_Children: []
   m_Father: {fileID: 383258462571632669}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &3629822445742728049
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3666634757974293028}
-  - component: {fileID: 8212886016400857780}
-  m_Layer: 0
-  m_Name: Footstep
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3666634757974293028
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3629822445742728049}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 383258462571632669}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!82 &8212886016400857780
+--- !u!82 &8663297315429024287
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3629822445742728049}
+  m_GameObject: {fileID: 2350363143873807853}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -623116166738933999, guid: 629d35de1678fe447974c67124a1d8d8, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
@@ -527,7 +494,7 @@ AudioSource:
   m_GameObject: {fileID: 5286590691884299150}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 5931361071291485640, guid: 629d35de1678fe447974c67124a1d8d8, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
@@ -656,7 +623,7 @@ AudioSource:
   m_GameObject: {fileID: 8627961796037646879}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -800013238093231046, guid: 629d35de1678fe447974c67124a1d8d8, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1

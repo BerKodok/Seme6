@@ -10,7 +10,6 @@ public class AudioManager : MonoBehaviour
     public AudioSource musicSource;
     public AudioSource uiSource;
     public AudioSource playerSFXSource;
-    public AudioSource footstepSource;
     public AudioSource environmentSource;
 
     [Header("BGM")]
@@ -100,7 +99,6 @@ public class AudioManager : MonoBehaviour
         SetupSource(musicSource, true, musicVolume);
         SetupSource(uiSource, false, sfxVolume);
         SetupSource(playerSFXSource, false, sfxVolume);
-        SetupSource(footstepSource, true, sfxVolume);
         SetupSource(environmentSource, true, environmentVolume);
     }
 
@@ -122,7 +120,6 @@ public class AudioManager : MonoBehaviour
         if (musicSource == null) Debug.LogError("Music Source belum di-assign di AudioManager!");
         if (uiSource == null) Debug.LogError("UI Source belum di-assign di AudioManager!");
         if (playerSFXSource == null) Debug.LogError("Player SFX Source belum di-assign di AudioManager!");
-        if (footstepSource == null) Debug.LogError("Footstep Source belum di-assign di AudioManager!");
         if (environmentSource == null) Debug.LogError("Environment Source belum di-assign di AudioManager!");
 
         if (mainMenuBGM == null) Debug.LogWarning("Main Menu BGM kosong.");
@@ -303,11 +300,11 @@ public class AudioManager : MonoBehaviour
         playerSFXSource.PlayOneShot(fallDownSFX, sfxVolume * volume);
     }
 
-    public void StartFootstepLoop(float volume = 1f)
+    public void PlayFootstep(float volume = 1f)
     {
-        if (footstepSource == null)
+        if (playerSFXSource == null)
         {
-            Debug.LogError("Gagal play Footstep: footstepSource NULL!");
+            Debug.LogError("Gagal play Footstep: playerSFXSource NULL!");
             return;
         }
 
@@ -317,29 +314,11 @@ public class AudioManager : MonoBehaviour
             return;
         }
 
-        if (footstepSource.clip != sprintFootstepSFX)
-            footstepSource.clip = sprintFootstepSFX;
-
-        footstepSource.volume = sfxVolume * volume;
-        footstepSource.loop = true;
-
-        if (!footstepSource.isPlaying)
-        {
-            Debug.Log("Play Footstep Loop");
-            footstepSource.Play();
-        }
+        Debug.Log("Play Footstep SFX");
+        playerSFXSource.PlayOneShot(sprintFootstepSFX, sfxVolume * volume);
     }
 
-    public void StopFootstepLoop()
-    {
-        if (footstepSource == null) return;
 
-        if (footstepSource.isPlaying)
-        {
-            Debug.Log("Stop Footstep Loop");
-            footstepSource.Stop();
-        }
-    }
 
     // =========================
     // ENVIRONMENT / CROWD

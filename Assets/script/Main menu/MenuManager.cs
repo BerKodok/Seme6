@@ -10,6 +10,8 @@ public class MenuManager : MonoBehaviour
     public CinemachineCamera CharacterSelectCam;
     public GameObject MenuPanel;
     public GameObject OptionPanel;
+    public GameObject OptionButtonPanel;
+    public GameObject CreditsPanel;
     public GameObject[] HowToPlayPanel;
     public GameObject CharSelectCanvas;
 
@@ -43,6 +45,7 @@ public class MenuManager : MonoBehaviour
         CameraManager.SwitchCamera(MenuCam);
         MenuPanel.SetActive(true);
         OptionPanel.SetActive(false);
+        CharSelectCanvas.SetActive(false);
         HideAllHowToPlayPanel();
         if (AudioManager.Instance != null)
         {
@@ -55,9 +58,26 @@ public class MenuManager : MonoBehaviour
         PlayClick();
 
         OptionPanel.SetActive(true);
+        OptionButtonPanel.SetActive(true);
         MenuPanel.SetActive(false);
         HideAllHowToPlayPanel();
 
+    }
+
+    public void SwitchToCredits()
+    {
+        PlayClick();
+        MenuPanel.SetActive(false);
+        CreditsPanel.SetActive(true);
+        OptionButtonPanel.SetActive(false);
+        HideAllHowToPlayPanel();
+    }
+
+    public void BackFromCredits()
+    {
+        PlayClick();
+        CreditsPanel.SetActive(false);
+        OptionButtonPanel.SetActive(true);
     }
 
     public void SwitchToHowToPlay()
