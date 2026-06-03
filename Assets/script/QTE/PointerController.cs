@@ -19,9 +19,6 @@ public class PointerController : MonoBehaviour
 
     public RectTransform pointerTransform;
 
-    [Header("Sound")]
-    public AudioSource audioSource;
-    public AudioClip countdownBeep;
 
     private bool playedThreeSound = false;
 
@@ -93,9 +90,13 @@ public class PointerController : MonoBehaviour
         {
             playedThreeSound = true;
 
-            if (audioSource != null && countdownBeep != null)
+            if (AudioManager.Instance != null)
             {
-                audioSource.PlayOneShot(countdownBeep);
+                AudioManager.Instance.PlayCountdown();
+            }
+            else
+            {
+                Debug.LogError("AudioManager.Instance NULL saat countdown!");
             }
         }
 
@@ -125,6 +126,7 @@ public class PointerController : MonoBehaviour
                 playerController.PlayerAnimator.speed = 1f;
 
             playerController.enabled = true;
+            playerController.FinishCountdown();
 
             if (qteSuccess)
                 playerController.canUseBoost = true;

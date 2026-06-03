@@ -60,11 +60,7 @@ public class RunController : MonoBehaviour
     public float qteDelay = 5f;
     public StaminaQTE staminaQTE;
 
-    [Header("Player SFX")]
-    public AudioClip sprintFootstepSFX;
-    public AudioClip boostSFX;
-    public AudioClip fallDownSFX;
-
+    [Header("Player SFX Volume")]
     public float sprintFootstepVolume = 1f;
     public float boostSFXVolume = 1f;
     public float fallDownSFXVolume = 1f;
@@ -73,8 +69,7 @@ public class RunController : MonoBehaviour
     public bool countdownFinished = false;
     public float minFootstepSpeed = 7f;
 
-    private AudioSource sfxSource;
-    private AudioSource footstepSource;
+
     private bool fallDownSFXPlayed = false;
 
     [Header("Footstep Animation Sync")]
@@ -217,6 +212,8 @@ public class RunController : MonoBehaviour
     {
         dashAction.performed -= OnDashPressed;
 
+        StopFootstepSFX();
+
         // stop animator utama
         if (PlayerAnimator != null)
         {
@@ -238,7 +235,7 @@ public class RunController : MonoBehaviour
         currentSpeed = walkSpeed;
         currentStamina = maxStamina;
 
-        countdownFinished = true;
+        countdownFinished = false;
 
         currentSpeedometerMax = normalSpeedometerMax;
 
@@ -262,21 +259,7 @@ public class RunController : MonoBehaviour
 
         qteTimer = qteDelay;
 
-
-
-        footstepSource = gameObject.AddComponent<AudioSource>();
-        footstepSource.playOnAwake = false;
-        footstepSource.loop = true;
-        footstepSource.spatialBlend = 0f;
-        footstepSource.volume = sprintFootstepVolume;
-
-        sfxSource = gameObject.AddComponent<AudioSource>();
-        sfxSource.playOnAwake = false;
-        sfxSource.loop = false;
-        sfxSource.spatialBlend = 0f;
-        sfxSource.volume = 1f;
     }
-
 
 
     void Update()
@@ -502,10 +485,10 @@ public class RunController : MonoBehaviour
 
         currentSpeedometerMax = dashSpeedometerMax;
 
-        if (sfxSource != null && boostSFX != null)
+        if (AudioManager.Instance != null)
         {
-            Debug.Log("BOOST SFX LANGSUNG DARI RUNCONTROLLER");
-            sfxSource.PlayOneShot(boostSFX, boostSFXVolume);
+            Debug.Log("BOOST SFX DARI AUDIOMANAGER");
+            AudioManager.Instance.PlayBoost(boostSFXVolume);
         }
     }
 
@@ -622,8 +605,7 @@ public class RunController : MonoBehaviour
 
     void HandleSprintFootstepSFX()
     {
-        if (footstepSource == null) return;
-        if (sprintFootstepSFX == null) return;
+        if (AudioManager.Instance == null) return;
 
         // Kalau countdown belum selesai, suara kaki tidak boleh bunyi
         if (!countdownFinished)
@@ -639,14 +621,7 @@ public class RunController : MonoBehaviour
 
         if (canPlayFootstep)
         {
-            if (!footstepSource.isPlaying)
-            {
-                Debug.Log("FOOTSTEP PLAY SETELAH COUNTDOWN | Speed: " + currentSpeed);
-
-                footstepSource.clip = sprintFootstepSFX;
-                footstepSource.volume = sprintFootstepVolume;
-                footstepSource.Play();
-            }
+            AudioManager.Instance.StartFootstepLoop(sprintFootstepVolume);
         }
         else
         {
@@ -656,22 +631,21 @@ public class RunController : MonoBehaviour
 
     void StopFootstepSFX()
     {
-        if (footstepSource != null && footstepSource.isPlaying)
+        if (AudioManager.Instance != null)
         {
-            footstepSource.Stop();
+            AudioManager.Instance.StopFootstepLoop();
         }
     }
 
     void HandleFallDownSFX()
     {
-        if (sfxSource == null) return;
-        if (fallDownSFX == null) return;
+        if (AudioManager.Instance == null) return;
 
         if (isStunned && !fallDownSFXPlayed)
         {
-            Debug.Log("FALLDOWN SFX LANGSUNG DARI RUNCONTROLLER");
+            Debug.Log("FALLDOWN SFX DARI AUDIOMANAGER");
 
-            sfxSource.PlayOneShot(fallDownSFX, fallDownSFXVolume);
+            AudioManager.Instance.PlayFallDown(fallDownSFXVolume);
             fallDownSFXPlayed = true;
         }
 

@@ -9368,7 +9368,6 @@ GameObject:
   - component: {fileID: 6033694825735843301}
   - component: {fileID: 7813700233710569623}
   - component: {fileID: 3992716690922884704}
-  - component: {fileID: -3153603265779782345}
   m_Layer: 0
   m_Name: Fix Player 2
   m_TagString: Player
@@ -9527,9 +9526,6 @@ MonoBehaviour:
   turnRecoverySpeed: 6.55
   qteDelay: 3
   staminaQTE: {fileID: 4111196474958343407}
-  sprintFootstepSFX: {fileID: 8300000, guid: f8afacaed42eaf541b7875cf888ef7cf, type: 3}
-  boostSFX: {fileID: 8300000, guid: 65ea8b8edeef0b04fb4af9b9c83e45a9, type: 3}
-  fallDownSFX: {fileID: 8300000, guid: 28636020f50b2224d9c5fbb1c748540b, type: 3}
   sprintFootstepVolume: 0.25
   boostSFXVolume: 0.5
   fallDownSFXVolume: 0.07
@@ -9603,14 +9599,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 352836535724356309}
---- !u!81 &-3153603265779782345
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4080960819771008232}
-  m_Enabled: 1
 --- !u!1 &4107978292209917856
 GameObject:
   m_ObjectHideFlags: 0
@@ -9956,8 +9944,6 @@ MonoBehaviour:
   countdownCanvas: {fileID: 7594611148418919017}
   playerController: {fileID: 450684524711761699}
   pointerTransform: {fileID: 4814354034582620656}
-  audioSource: {fileID: 815674204736914731}
-  countdownBeep: {fileID: 8300000, guid: fd2196072ebae9e4f9ff6501e4dfad41, type: 3}
 --- !u!82 &815674204736914731
 AudioSource:
   m_ObjectHideFlags: 0
@@ -9970,7 +9956,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: fd2196072ebae9e4f9ff6501e4dfad41, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
@@ -14869,7 +14855,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8027687185859483111}
-  m_Enabled: 0
+  m_Enabled: 1
 --- !u!114 &6757029424772718509
 MonoBehaviour:
   m_ObjectHideFlags: 0
